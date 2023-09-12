@@ -1,6 +1,5 @@
 
 const errorMessages = (code: string) => {
-  console.log(code)
   switch (code) {
     // Postgres Errors
     case "23505":
