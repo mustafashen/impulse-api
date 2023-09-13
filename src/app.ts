@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './src/configs/.env' })
+require('dotenv').config({ path: './src/configs/.env.dev' })
 import express from 'express'
 import {customerRouter} from './routes/client/customerRoute'
 

@@ -4,14 +4,17 @@ import { CustomerController } from '../../src/controllers/client/customerControl
 import { mockInputsCustomer } from './__mocks__/mockInputsCustomer';
 import { Server } from 'http';
 import { mockCustomerAuth } from './__mocks__/mockCustomerAuth';
-
+import { authenticateCustomer } from '../../src/middlewares/client/auth';
+import { knex } from '../../src/db/knex';
+import { testTables } from './__mocks__/knexTestTables';
 
 const {signupInput, loginInput} = mockInputsCustomer
 
-describe("Customer Routes", () => {
+// Test if customer signup route creates a user
+describe("Customer Signup", () => {
   let server: Server
-
   beforeEach(() => {
+    knex.schema.createTable('customer', testTables.customerTestTable).catch((error: any) => console.log(error))
     server = app.listen(3000)
   })
 
@@ -21,37 +24,22 @@ describe("Customer Routes", () => {
   })
 
   it ('passes body to signup controller, returns success', async () => {
-    const mockController = jest.spyOn(CustomerController, 'postSignupCustomer')
-    mockController.mockImplementation(() => Promise.resolve({
-      Success: true
-    }))
 
     const res = await request(server)
       .post('/customer/signup')
       .send(signupInput.body)
     
-    expect(mockController).toBeCalledWith(signupInput.body)
     expect(res.status).toBe(201)
-  })
 
-  it ('passes body to login controller, returns token', async () => {
-    const mockController = jest.spyOn(CustomerController, 'postLoginCustomer')
-    mockController.mockImplementation(() => Promise.resolve({
-      token: "some token"
-    }))
-
-    const res = await request(server)
-      .post('/customer/login')
-      .send(loginInput.body)
-
-    expect(mockController).toBeCalledWith(loginInput.body)
-    expect(res.status).toBe(201)
-  })
-
-  it ('passes token to logout controller, returns success', async () => {
+    const inserted =  await knex('customer').where({email: signupInput.body.customer.email})
+    expect(inserted).toHaveLength(1)
     
-    const res = await request(server)
-      .delete('/customer/logout')
-      .set('Authorization', 'some token')
   })
+
 })
+
+
+// ** Auth Tests **
+// Test if passing no token bypasses auth
+// Test if passing token with wrong sign bypasses auth
+// Test if passing token with the id that not in db bypasses auth

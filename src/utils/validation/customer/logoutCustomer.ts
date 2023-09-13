@@ -10,8 +10,8 @@ const CustomerLogoutSchema = {
   required: ["token"]
 }
 
-const validateCostumerLogoutParams = ajv.compile(CustomerLogoutSchema)
+const validateCustomerLogoutParams = ajv.compile(CustomerLogoutSchema)
 
 export {
-  validateCostumerLogoutParams
+  validateCustomerLogoutParams
 }

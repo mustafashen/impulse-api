@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt')
 import { CustomerType } from "../../types/CustomerTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
 import { validateCustomerLoginParams } from "../../utils/validation/customer/loginCustomer"
-import { validateCostumerLogoutParams } from "../../utils/validation/customer/logoutCustomer"
-import { validateCostumerSignupParams } from "../../utils/validation/customer/signupCustomer"
+import { validateCustomerLogoutParams } from "../../utils/validation/customer/logoutCustomer"
+import { validateCustomerSignupParams } from "../../utils/validation/customer/signupCustomer"
 
 
 const CustomerController = {
@@ -14,7 +14,7 @@ const CustomerController = {
       const {customer} = body
       customer.id = uuidv4()
       customer.tokens = []
-      const valid = validateCostumerSignupParams(customer)
+      const valid = validateCustomerSignupParams(customer)
       if (!valid) throw "2000"
  
       customer.password = await bcrypt.hash(customer.password, 10)
@@ -48,7 +48,7 @@ const CustomerController = {
 
   deleteLogoutCustomer: async (body: {token: string, id: string}) => {
     try {
-      const valid = validateCostumerLogoutParams(body)
+      const valid = validateCustomerLogoutParams(body)
       if (!valid) throw "2000"
       const resData = await CustomerModel.deleteAuthToken(body.id, body.token)
       if (resData?.Error) throw resData.Error

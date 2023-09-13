@@ -1,14 +1,14 @@
 import {knex} from "../../db/knex"
 import {Request, Response, NextFunction} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
-var jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 const {httpCode, message} = errorMessages("4000")
 
 async function authenticateCustomer(req: Request, res: Response, next: NextFunction) {
   try {
-    const token = req.headers.authorization?.replace('Bearer ', '')
     
+    const token = req.headers.authorization?.replace('Bearer ', '')
     // If there is no auth token respond unauthorized
     if (!token) {
       res.status(httpCode).send({Error: message})
@@ -17,11 +17,10 @@ async function authenticateCustomer(req: Request, res: Response, next: NextFunct
     // Verify token, if id is absent in it respond unauthorized
     const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)
     if (!decodedJWT.id) res.status(httpCode).send({Error: message})
-
+    
     // Find the customer with the id in received via token
     const foundCustomer = await knex('customer').select('id', 'tokens').where('id', decodedJWT.id)
     const foundCustomersTokens = foundCustomer[0].tokens
-    
     // If no customer found, if token doesn't exist respond unauthorized
     // Otherwise add the id and token to request body and proceed
     if (foundCustomer.length === 0) { 
@@ -35,6 +34,7 @@ async function authenticateCustomer(req: Request, res: Response, next: NextFunct
     }
 
   } catch (error) {
+    console.log(error)
     res.status(401).send({Error: 'Error during authentication'})
   }
 }

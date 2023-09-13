@@ -10,6 +10,9 @@ const CustomerModel = {
       return {Success: true}
       
     } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
       return {Error: error}
     }
   },
@@ -27,6 +30,9 @@ const CustomerModel = {
       }
 
     } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
       return {Error: error}
     }
   },
@@ -42,6 +48,9 @@ const CustomerModel = {
       return {Success: true}
       
     } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
       return {Error: error}
     }
   },
@@ -59,6 +68,9 @@ const CustomerModel = {
       return {Success: true}
 
     } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
       return {Error: error}
     }
   },
@@ -70,6 +82,9 @@ const CustomerModel = {
       return {Success: true}
 
     } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
       return {Error: error}
     }
   }

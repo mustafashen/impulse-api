@@ -6,7 +6,7 @@ const ajv = new Ajv()
 addFormats(ajv)
 ajv.addFormat("phone", /^[+][0-9]{12}$/)
 
-const CostumerSignupSchema = {
+const CustomerSignupSchema = {
   type: "object",
   properties: {
     id: {type: "string", format: "uuid"},
@@ -28,8 +28,8 @@ const CostumerSignupSchema = {
   required: ["id", "name", "last_name", "birth_date", "email", "password", "phone", "gender", "address", "city", "province", "country", "zip_code"],
 }
 
-const validateCostumerSignupParams = ajv.compile(CostumerSignupSchema)
+const validateCustomerSignupParams = ajv.compile(CustomerSignupSchema)
 
 export {
-  validateCostumerSignupParams
+  validateCustomerSignupParams
 }
