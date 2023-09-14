@@ -24,7 +24,7 @@ const mockInputsCustomer = {
     "body" : {
       "customer": {
         "email": "some@email.com",
-        "password": "abc123def"
+        "password": "abc123dfe"
       }
     }
   }

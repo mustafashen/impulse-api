@@ -14,7 +14,7 @@ const testTables = {
     table.string('province');
     table.string('country');
     table.integer('zip_code');
-    table.specificType('tokens', 'array string')
+    table.specificType('tokens', 'text ARRAY')
   }
 }
 

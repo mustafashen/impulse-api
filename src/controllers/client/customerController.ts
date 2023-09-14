@@ -22,6 +22,7 @@ const CustomerController = {
       if (resData?.Error) throw resData.Error
       else return resData
     } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   },
