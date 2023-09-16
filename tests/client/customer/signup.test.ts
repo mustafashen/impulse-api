@@ -2,19 +2,16 @@ import request from 'supertest';
 import {app} from '../../../src/app';
 import { mockInputsCustomer } from './../__mocks__/mockInputsCustomer';
 import { knex } from '../../../src/db/knex';
+import { resetCustomerTable } from '../test-utils/resetCustomerTable';
 
 
 const {signupInput, loginInput} = mockInputsCustomer
 
-afterAll(async () => {
-  await knex.destroy()
-})
-
-
 afterEach(async () => {
   jest.restoreAllMocks()
-  await knex('customer').delete()
 })
+
+afterAll(resetCustomerTable)
 
 describe("Customer Signup", () => {
 
@@ -26,6 +23,10 @@ describe("Customer Signup", () => {
     
     expect(res.status).toBe(201)
 
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000)
+    })
+    
     const inserted =  await knex('customer').where({email: signupInput.body.customer.email})
     expect(inserted).toHaveLength(1)
     
