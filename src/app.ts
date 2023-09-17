@@ -7,11 +7,13 @@ const config = ((env: any) => {
 
 require('dotenv').config({ path: config })
 import express from 'express'
-import {customerRouter} from './routes/client/customerRoute'
+import {customerRouter} from './routes/customer/customerRoute'
+import {categoryRouter} from './routes/customer/categoryRoute'
 
 const app = express()
 app.use(express.json())
 app.use('/customer', customerRouter)
+app.use('/category', categoryRouter)
 
 export {
   app

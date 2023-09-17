@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid')
-import { CustomerModel } from "../../models/client/customerModel"
+import { CustomerModel } from "../../models/customer/customerModel"
 const bcrypt = require('bcrypt')
 import { CustomerType } from "../../types/CustomerTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
@@ -20,7 +20,7 @@ const CustomerController = {
       customer.password = await bcrypt.hash(customer.password, 10)
       const resData = await CustomerModel.createCustomer(customer)
       if (resData?.Error) throw resData.Error
-      else return resData
+      return resData
     } catch (error) {
       console.log(error)
       return {Error: error}
