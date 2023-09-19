@@ -14,16 +14,16 @@ async function authenticateAdmin(req: Request, res: Response, next: NextFunction
     const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)
     if (!decodedJWT) res.status(httpCode).send({Error: message})
 
-    const foundStaff = await knex('staff').select('id', 'tokens', 'password, isAdmin').where({'id': decodedJWT.id})
-    if (foundStaff.length === 0) res.status(httpCode).send({Error: message})
+    const foundAdmin = await knex('staff').select('id', 'tokens', 'password, isAdmin').where({'id': decodedJWT.id, 'admin': true})
+    if (foundAdmin.length === 0) res.status(httpCode).send({Error: message})
 
-    if (!foundStaff[0].isAdmin) res.status(httpCode).send({Error: message})
+    if (!foundAdmin[0].isAdmin) res.status(httpCode).send({Error: message})
 
-    const foundStaffToken = foundStaff[0].tokens
-    if (!foundStaffToken.includes(token)) res.status(httpCode).send({Error: message})
+    const foundAdminToken = foundAdmin[0].tokens
+    if (!foundAdminToken.includes(token)) res.status(httpCode).send({Error: message})
 
-    const foundStaffPassword = foundStaff[0].password
-    const isMatch = await bcrypt.compare(foundStaffPassword, req.body.password)
+    const foundAdminPassword = foundAdmin[0].password
+    const isMatch = await bcrypt.compare(foundAdminPassword, req.body.password)
     if (!isMatch) res.status(httpCode).send({Error: message})
 
   } catch (error) {

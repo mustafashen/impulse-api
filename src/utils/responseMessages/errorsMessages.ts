@@ -1,4 +1,5 @@
 
+// TODO: Organize error messages better
 const errorMessages = (code: string) => {
   switch (code) {
     // Postgres Errors
@@ -31,6 +32,8 @@ const errorMessages = (code: string) => {
     // Internal Server Error
     case "5000":
       return { httpCode: 500, message: {Server: "Internal server error"} }
+    case "6000":
+      return { httpCode: 400, message: {Server: "Bad request"}}
     default:
       return { httpCode: 500, message: {Server: "Internal server error"} }
     

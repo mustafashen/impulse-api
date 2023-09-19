@@ -8,6 +8,12 @@ interface StaffType  {
   isAdmin: false
 }
 
+interface StaffLoginType  {
+  email: string,
+  password: string
+}
+
 export { 
-  StaffType
+  StaffType,
+  StaffLoginType
 }

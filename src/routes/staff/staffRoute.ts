@@ -5,8 +5,9 @@ import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 
 const staffRouter = express.Router()
 
-staffRouter.post('/createStaff', authenticateAdmin, async (req: Request, res: Response) => {
+staffRouter.post('/staffCreate', async (req: Request, res: Response) => {
   try {
+    if (Object.keys(req.body).length === 0) throw "6000" 
     const resData = await StaffController.postCreateStaff(req.body)
     if (resData?.Error) throw resData.Error
     res.status(201).send(resData)
@@ -16,6 +17,19 @@ staffRouter.post('/createStaff', authenticateAdmin, async (req: Request, res: Re
   }
 })
 
+staffRouter.post('/staffLogin',async (req: Request, res: Response) => {
+  try {
+    if (Object.keys(req.body).length === 0) throw "6000" 
+
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send({Error: message})
+  }
+})
+
+export {
+  staffRouter
+}
 // TODO:
-// Staff login
-// Staff Authentication
+// Staff login, so admin can get authentication token to do admin stuff like creating new staff
+// Staff Authentication, for all staff ops
