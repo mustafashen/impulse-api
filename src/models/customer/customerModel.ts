@@ -44,7 +44,7 @@ const CustomerModel = {
       const res = await knex('customer')
         .where({id: customerId})
         .update({['tokens']: [...currentTokens, token]})
-        if (res.length === 0) throw "3000" 
+      if (res.length === 0) throw "3000" 
       return {Success: true}
       
     } catch (error: any) {

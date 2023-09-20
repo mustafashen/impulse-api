@@ -5,7 +5,7 @@ import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 
 const staffRouter = express.Router()
 
-staffRouter.post('/staffCreate', async (req: Request, res: Response) => {
+staffRouter.post('/staffCreate', authenticateAdmin, async (req: Request, res: Response) => {
   try {
     if (Object.keys(req.body).length === 0) throw "6000" 
     const resData = await StaffController.postCreateStaff(req.body)
@@ -20,7 +20,9 @@ staffRouter.post('/staffCreate', async (req: Request, res: Response) => {
 staffRouter.post('/staffLogin',async (req: Request, res: Response) => {
   try {
     if (Object.keys(req.body).length === 0) throw "6000" 
-
+    const resData = await StaffController.postLoginStaff(req.body)
+    if (resData.Error) throw resData.Error
+    res.status(201).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send({Error: message})

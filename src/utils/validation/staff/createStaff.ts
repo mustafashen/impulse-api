@@ -16,8 +16,18 @@ const StaffCreateSchema = {
   }
 }
 
+const StaffLoginSchema = {
+  type: "object",
+  properties: {
+    email: {type: "string", format: "email"},
+    password: {type: "string", format: "password"}
+  }
+}
+
 const validateCreateStaffParams = ajv.compile(StaffCreateSchema)
+const validateLoginStaffParams = ajv.compile(StaffLoginSchema)
 
 export {
-  validateCreateStaffParams
+  validateCreateStaffParams,
+  validateLoginStaffParams
 }
