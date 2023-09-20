@@ -1,7 +1,7 @@
 import { StaffModel } from "../../models/cms/staffModel_cms"
 import { StaffType, StaffLoginType } from "../../types/StaffTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
-import { validateCreateStaffParams, validateLoginStaffParams } from "../../utils/validation/cms/createStaff"
+import { validateCreateStaffParams, validateLoginStaffParams } from "../../utils/validation/cms/staffValidation"
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcrypt')
 
@@ -12,7 +12,7 @@ const StaffController = {
       const {staff} = body
       staff.id = uuidv4()
       staff.tokens = []
-
+      
       const valid = validateCreateStaffParams(staff)
       if (!valid) throw "2000"
 

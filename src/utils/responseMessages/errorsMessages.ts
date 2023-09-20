@@ -7,6 +7,8 @@ const errorMessages = (code: string) => {
       return { httpCode: 409, message: {DB: "Unique violation"} }
     case "23503":
       return { httpCode: 409, message: {DB: "Foreign key violation"} }
+    case "23502":
+      return { httpCode: 400, message: {DB: "Primary key violation"}}
     case "23514":
       return { httpCode: 422, message: {DB: "Check violation"} }
     case "08001":

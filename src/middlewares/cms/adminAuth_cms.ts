@@ -23,13 +23,11 @@ async function authenticateAdmin(req: Request, res: Response, next: NextFunction
 
     const foundAdminToken = foundAdmin[0].tokens
     if (!foundAdminToken.includes(token)) res.status(httpCode).send({Error: message})
-
-    const foundAdminPassword = foundAdmin[0].password
-    
-    const isMatch = await bcrypt.compare(staff.password, foundAdminPassword)
-    if (!isMatch) res.status(httpCode).send({Error: message})
-
-    if (isMatch) next()
+    else {
+      req.body.token = token
+      req.body.id = decodedJWT.id
+      next()
+    }
   } catch (error) {
     console.log(error)
     res.status(401).send({Error: 'Error during authentication'})

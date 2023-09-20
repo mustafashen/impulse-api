@@ -8,7 +8,6 @@ const {httpCode, message} = errorMessages("4000")
 
 async function authenticateStaff(req: Request, res: Response, next: NextFunction) {
   try {
-    const {staff} = req.body
 
     const token = req.headers.authorization?.replace('Bearer', '')
     if (!token) res.status(httpCode).send({Error: message})
@@ -19,17 +18,13 @@ async function authenticateStaff(req: Request, res: Response, next: NextFunction
     const foundStaff = await knex('staff').select('*').where({'id': decodedJWT.id})
     if (foundStaff.length === 0) res.status(httpCode).send({Error: message})
     
-    if (!foundStaff[0].isStaff) res.status(httpCode).send({Error: message})
-
     const foundStaffToken = foundStaff[0].tokens
     if (!foundStaffToken.includes(token)) res.status(httpCode).send({Error: message})
-
-    const foundStaffPassword = foundStaff[0].password
-    
-    const isMatch = await bcrypt.compare(staff.password, foundStaffPassword)
-    if (!isMatch) res.status(httpCode).send({Error: message})
-
-    if (isMatch) next()
+    else {
+      req.body.token = token
+      req.body.id = decodedJWT.id
+      next()
+    }
   } catch (error) {
     console.log(error)
     res.status(401).send({Error: 'Error during authentication'})
