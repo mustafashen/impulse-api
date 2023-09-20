@@ -1,11 +1,11 @@
 const { v4: uuidv4 } = require('uuid')
-import { CustomerModel } from "../../models/customer/customerModel"
+import { CustomerModel } from "../../models/client/customerModel"
 const bcrypt = require('bcrypt')
 import { CustomerType } from "../../types/CustomerTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
-import { validateCustomerLoginParams } from "../../utils/validation/customer/loginCustomer"
-import { validateCustomerLogoutParams } from "../../utils/validation/customer/logoutCustomer"
-import { validateCustomerSignupParams } from "../../utils/validation/customer/signupCustomer"
+import { validateCustomerLoginParams } from "../../utils/validation/client/loginCustomer"
+import { validateCustomerLogoutParams } from "../../utils/validation/client/logoutCustomer"
+import { validateCustomerSignupParams } from "../../utils/validation/client/signupCustomer"
 
 
 const CustomerController = {

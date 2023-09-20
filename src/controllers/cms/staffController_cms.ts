@@ -1,7 +1,7 @@
-import { StaffModel } from "../../models/staff/staffModel"
+import { StaffModel } from "../../models/cms/staffModel_cms"
 import { StaffType, StaffLoginType } from "../../types/StaffTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
-import { validateCreateStaffParams, validateLoginStaffParams } from "../../utils/validation/staff/createStaff"
+import { validateCreateStaffParams, validateLoginStaffParams } from "../../utils/validation/cms/createStaff"
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcrypt')
 

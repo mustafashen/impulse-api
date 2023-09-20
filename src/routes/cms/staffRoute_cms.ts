@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express"
-import { authenticateAdmin } from "../../middlewares/staff/adminAuth"
-import { StaffController } from "../../controllers/staff/staffController"
+import { authenticateAdmin } from "../../middlewares/cms/adminAuth_cms"
+import { StaffController } from "../../controllers/cms/staffController_cms"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 
-const staffRouter = express.Router()
+const staffRouter_cms = express.Router()
 
-staffRouter.post('/staffCreate', authenticateAdmin, async (req: Request, res: Response) => {
+staffRouter_cms.post('/staffCreate', authenticateAdmin, async (req: Request, res: Response) => {
   try {
     if (Object.keys(req.body).length === 0) throw "6000" 
     const resData = await StaffController.postCreateStaff(req.body)
@@ -17,7 +17,7 @@ staffRouter.post('/staffCreate', authenticateAdmin, async (req: Request, res: Re
   }
 })
 
-staffRouter.post('/staffLogin',async (req: Request, res: Response) => {
+staffRouter_cms.post('/staffLogin',async (req: Request, res: Response) => {
   try {
     if (Object.keys(req.body).length === 0) throw "6000" 
     const resData = await StaffController.postLoginStaff(req.body)
@@ -30,7 +30,7 @@ staffRouter.post('/staffLogin',async (req: Request, res: Response) => {
 })
 
 export {
-  staffRouter
+  staffRouter_cms
 }
 // TODO:
 // Staff login, so admin can get authentication token to do admin stuff like creating new staff

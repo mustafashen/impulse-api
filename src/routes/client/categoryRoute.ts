@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
-import { CategoryController } from "../../controllers/customer/categoryController"
+import { CategoryController } from "../../controllers/client/categoryController"
 
 const categoryRouter = express.Router()
 

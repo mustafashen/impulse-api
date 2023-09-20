@@ -1,4 +1,4 @@
-import { CategoryModel } from "../../models/customer/categoryModel"
+import { CategoryModel } from "../../models/client/categoryModel"
 
 const CategoryController = {
   getCategories: async () => {
