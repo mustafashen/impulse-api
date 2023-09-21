@@ -6,7 +6,7 @@ const CategoryModel = {
     try {
       const res = await knex('category').select('*')
       console.log(res)
-      if (res.length === 0) throw "3000"
+      if (res.length === 0 || res === 0) throw "4004"
       return res
     } catch (error: any) {
       if (error.code) {

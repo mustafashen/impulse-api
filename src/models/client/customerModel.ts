@@ -6,7 +6,7 @@ const CustomerModel = {
   createCustomer: async (customer: CustomerType) => {
     try {
       const res = await knex('customer').insert(customer)
-      if (res.length === 0) throw "3000" 
+      if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
       
     } catch (error: any) {
@@ -21,11 +21,11 @@ const CustomerModel = {
     try {
       if (email) {
         const res = await knex('customer').where({email: email})
-        if (res.length === 0) throw "3000" 
+        if (res.length === 0 || res === 0) throw "4004" 
         return res
       } else if (id) {
         const res = await knex('customer').where({id: id})
-        if (res.length === 0) throw "3000" 
+        if (res.length === 0 || res === 0) throw "4004" 
         return res
       }
 
@@ -44,7 +44,7 @@ const CustomerModel = {
       const res = await knex('customer')
         .where({id: customerId})
         .update({['tokens']: [...currentTokens, token]})
-      if (res.length === 0) throw "3000" 
+      if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
       
     } catch (error: any) {
@@ -64,7 +64,7 @@ const CustomerModel = {
       const res = await knex('customer')
       .where({id: customerId})
       .update({['tokens']: [...newTokens]})
-      if (res.length === 0) throw "3000" 
+      if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
     } catch (error: any) {
@@ -78,7 +78,7 @@ const CustomerModel = {
   deleteCustomer: async (customerId: string) => {
     try {
       const res = await knex('customer').where({id: customerId}).del()
-      if (res.length === 0) throw "3000" 
+      if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
     } catch (error: any) {

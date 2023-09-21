@@ -15,7 +15,7 @@ const CustomerController = {
       customer.id = uuidv4()
       customer.tokens = []
       const valid = validateCustomerSignupParams(customer)
-      if (!valid) throw "2000"
+      if (!valid) throw "4022"
  
       customer.password = await bcrypt.hash(customer.password, 10)
       const resData = await CustomerModel.createCustomer(customer)
@@ -31,13 +31,13 @@ const CustomerController = {
     try {
       const {customer} = body
       const valid = validateCustomerLoginParams(customer)
-      if (!valid) throw "2000"
+      if (!valid) throw "4022"
 
       const searchResult = await CustomerModel.findCustomer({email: customer.email})
       if (searchResult?.Error) throw searchResult.error
 
       const isMatch = await bcrypt.compare(customer.password, searchResult[0].password)
-      if (!isMatch) throw "1000"
+      if (!isMatch) throw "4001"
 
       const token = await generateAuthToken(searchResult[0].id)
       CustomerModel.addNewAuthToken(searchResult[0].id, token)
@@ -50,7 +50,7 @@ const CustomerController = {
   deleteLogoutCustomer: async (body: {token: string, id: string}) => {
     try {
       const valid = validateCustomerLogoutParams(body)
-      if (!valid) throw "2000"
+      if (!valid) throw "4022"
       const resData = await CustomerModel.deleteAuthToken(body.id, body.token)
       if (resData?.Error) throw resData.Error
       
@@ -66,7 +66,7 @@ const CustomerController = {
       if (searchResult?.Error) throw searchResult.Error
       
       const isMatch = await bcrypt.compare(body.password, searchResult[0].password)
-      if (!isMatch) throw "1000"
+      if (!isMatch) throw "4001"
 
       const resData = await CustomerModel.deleteCustomer(body.id)
       if (resData?.Error) throw resData.Error

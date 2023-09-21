@@ -8,13 +8,13 @@ const bcrypt = require('bcrypt')
 const StaffController = {
   postCreateStaff: async (body: {staff: StaffType}) => {
     try {
-      if (!body.staff) throw "6000"
+      if (!body.staff) throw "4000"
       const {staff} = body
       staff.id = uuidv4()
       staff.tokens = []
       
       const valid = validateCreateStaffParams(staff)
-      if (!valid) throw "2000"
+      if (!valid) throw "4022"
 
       staff.password = await bcrypt.hash(staff.password, 10)
       
@@ -28,17 +28,17 @@ const StaffController = {
 
   postLoginStaff: async (body: {staff: StaffLoginType}) => {
     try {
-      if (!body.staff) throw "6000"
+      if (!body.staff) throw "4000"
       const {staff} = body 
       // validate params
       const valid = validateLoginStaffParams(staff)
-      if (!valid) throw "2000"
+      if (!valid) throw "4022"
       // find user
       const foundUser = await StaffModel.readStaff(staff)
       if (foundUser.Error) throw foundUser.Error
       // compare hashes
       const doesMatch = await bcrypt.compare(staff.password, foundUser.password)
-      if (!doesMatch) throw "1000"
+      if (!doesMatch) throw "4001"
       // generate authentication token and add to db
       const jwt = await generateAuthToken(foundUser.id)
       // return the auth token

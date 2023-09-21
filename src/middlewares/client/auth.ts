@@ -3,7 +3,7 @@ import {Request, Response, NextFunction} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 const jwt = require('jsonwebtoken')
 
-const {httpCode, message} = errorMessages("4000")
+const {httpCode, message} = errorMessages("4003")
 
 async function authenticateCustomer(req: Request, res: Response, next: NextFunction) {
   try {

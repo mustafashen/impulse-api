@@ -15,8 +15,18 @@ const CategoryCreateSchema = {
   required: ["id", "name"]
 }
 
+const CategoryDeleteSchema = {
+  type: "object",
+  properties: {
+    name: {type: "string"}
+  },
+  required: ["name"]
+}
+
 const validateCreateCategoryParams = ajv.compile(CategoryCreateSchema)
+const validateCategoryDeleteParams = ajv.compile(CategoryDeleteSchema)
 
 export {
-  validateCreateCategoryParams
+  validateCreateCategoryParams,
+  validateCategoryDeleteParams
 }

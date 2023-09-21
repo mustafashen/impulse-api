@@ -7,7 +7,7 @@ const staffRouter_cms = express.Router()
 
 staffRouter_cms.post('/create', authenticateAdmin, async (req: Request, res: Response) => {
   try {
-    if (Object.keys(req.body).length === 0) throw "6000" 
+    if (Object.keys(req.body).length === 0) throw "4000" 
     const resData = await StaffController.postCreateStaff(req.body)
     if (resData?.Error) throw resData.Error
     res.status(201).send(resData)
@@ -19,7 +19,7 @@ staffRouter_cms.post('/create', authenticateAdmin, async (req: Request, res: Res
 
 staffRouter_cms.post('/login',async (req: Request, res: Response) => {
   try {
-    if (Object.keys(req.body).length === 0) throw "6000" 
+    if (Object.keys(req.body).length === 0) throw "4000" 
     const resData = await StaffController.postLoginStaff(req.body)
     if (resData.Error) throw resData.Error
     res.status(201).send(resData)

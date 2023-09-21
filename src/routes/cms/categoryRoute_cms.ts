@@ -12,11 +12,19 @@ import { CategoryController } from "../../controllers/cms/categoryController_cms
 const categoryRouter_cms = express.Router()
 
 categoryRouter_cms.post('/create', authenticateStaff, async (req: Request, res: Response) => {
-  // create new category
-  // category element suppose to have a parent element
-  // if there is not its going to default to all
   try {
     const resData = await CategoryController.createCategoryController(req.body)
+    if (resData?.Error) throw resData.Error
+    res.status(201).send({Success: true})
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
+categoryRouter_cms.delete('/delete', authenticateStaff, async (req: Request, res: Response) => {
+  try {
+    const resData = await CategoryController.deleteCategoryController(req.body)
     if (resData?.Error) throw resData.Error
     res.status(201).send({Success: true})
   } catch (error: any) {

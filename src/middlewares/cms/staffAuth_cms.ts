@@ -4,7 +4,7 @@ import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
-const {httpCode, message} = errorMessages("4000")
+const {httpCode, message} = errorMessages("4003")
 
 async function authenticateStaff(req: Request, res: Response, next: NextFunction) {
   try {
