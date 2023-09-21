@@ -10,7 +10,7 @@ const CategoryCreateSchema = {
   properties: {
     id: {type: "string"},
     name: {type: "string"},
-    parentId: {type: "string"}
+    parentName: {type: "string"}
   },
   required: ["id", "name"]
 }
@@ -23,10 +23,24 @@ const CategoryDeleteSchema = {
   required: ["name"]
 }
 
+const CategoryUpdateSchema = {
+  type: "object",
+  properties: {
+    nameToUpdate: {type: "string"},
+    updates: {type: "object", properties: {
+      name: {type: "string"},
+      parentName: {type: "string"}
+    }}
+  },
+  required: ["nameToUpdate", "updates"]
+}
+
 const validateCreateCategoryParams = ajv.compile(CategoryCreateSchema)
 const validateCategoryDeleteParams = ajv.compile(CategoryDeleteSchema)
+const validateCategoryUpdateParams = ajv.compile(CategoryUpdateSchema)
 
 export {
   validateCreateCategoryParams,
-  validateCategoryDeleteParams
+  validateCategoryDeleteParams,
+  validateCategoryUpdateParams,
 }

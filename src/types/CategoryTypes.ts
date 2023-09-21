@@ -2,9 +2,18 @@
 interface CreateCategoryType {
   id: string,
   name: string,
-  parentId: string
+  parentName: string
+}
+
+interface UpdateCategoryType {
+  nameToUpdate: string,
+  updates: {
+    name: string,
+    parentName: string
+  }
 }
 
 export {
-  CreateCategoryType
+  CreateCategoryType,
+  UpdateCategoryType,
 }

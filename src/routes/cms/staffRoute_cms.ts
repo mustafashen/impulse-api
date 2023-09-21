@@ -29,9 +29,8 @@ staffRouter_cms.post('/login',async (req: Request, res: Response) => {
   }
 })
 
+
+
 export {
   staffRouter_cms
 }
-// TODO:
-// Staff login, so admin can get authentication token to do admin stuff like creating new staff
-// Staff Authentication, for all staff ops
