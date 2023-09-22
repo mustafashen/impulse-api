@@ -1,9 +1,3 @@
-
-// TODO: 
-// use this route to create new categories
-// for this there should be an authentication system [done]
-// create staff account and authentication system [done]
-
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { authenticateStaff } from "../../middlewares/cms/staffAuth_cms"
