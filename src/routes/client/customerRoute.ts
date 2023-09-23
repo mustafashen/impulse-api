@@ -56,6 +56,18 @@ customerRouter.delete("/delete", authenticateCustomer, async (req: Request, res:
   }
 })
 
+customerRouter.put("/update", authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await CustomerController.updateCustomer(req.body)
+    if (resData?.Error) throw resData.Error
+    res.send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    console.log(httpCode, message)
+    res.status(httpCode).send({Error: message})
+  }
+})
+
 customerRouter.get("/", authenticateCustomer, async (req: Request, res: Response) => {
   try {
     // Query customer info; main info, cart, wishlist, orders etc.

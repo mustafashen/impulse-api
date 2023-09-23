@@ -1,5 +1,5 @@
 import {knex} from "../../db/knex"
-import {CustomerType} from "../../types/CustomerTypes"
+import {CustomerType, CustomerUpdateType} from "../../types/CustomerTypes"
 
 const CustomerModel = {
 
@@ -81,6 +81,18 @@ const CustomerModel = {
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
+  },
+
+  updateCustomer: async (body: {customer: CustomerUpdateType, id: string}) => {
+    const {customer} = body
+    try {
+      const res = await knex('customer').where({id: body.id}).update({...customer.updates})
     } catch (error: any) {
       if(error.code) {
         return {Error: error.code}

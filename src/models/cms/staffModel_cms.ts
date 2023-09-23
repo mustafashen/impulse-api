@@ -46,7 +46,41 @@ const StaffModel = {
       }
       return {Error: error}
     }
-  }
+  },
+
+  deleteAccountStaff: async (staff: {id: string}) => {
+    try {
+      const res = await knex('staff').where({id: staff.id}).delete()
+      if (res.length === 0 || res === 0) throw "4004"
+      return {Success: "true"}
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
+  },
+
+  deleteAuthToken: async (staffId: string, token: string) => {
+    try {
+      const tokensCol = await knex('staff').where({id: staffId}).select('tokens')
+      const currentTokens = tokensCol[0].tokens
+
+      const newTokens = currentTokens.filter((t: string) => t !== token)
+      const res = await knex('staff')
+      .where({id: staffId})
+      .update({['tokens']: [...newTokens]})
+      if (res.length === 0 || res === 0) throw "4004" 
+      return {Success: true}
+
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
+  },
+  
 }
 
 export {

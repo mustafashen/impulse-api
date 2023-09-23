@@ -1,7 +1,12 @@
+import { knex } from "../../db/knex"
 import { StaffModel } from "../../models/cms/staffModel_cms"
 import { StaffType, StaffLoginType } from "../../types/StaffTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
-import { validateCreateStaffParams, validateLoginStaffParams } from "../../utils/validation/cms/staffValidation"
+import { 
+  validateCreateStaffParams, 
+  validateLoginStaffParams,
+  validateDeleteStaffParams,
+  validateStaffLogoutParams } from "../../utils/validation/cms/staffValidation"
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcrypt')
 
@@ -47,6 +52,44 @@ const StaffController = {
       else if (resData.Success) return {token: jwt}
       else throw "Unexpected error during login"
     } catch (error) {
+      return {Error: error}
+    }
+  },
+
+  deleteLogoutStaff: async (body: {token: string, id: string}) => {
+    try {
+      const valid = validateStaffLogoutParams(body)
+      if (!valid) throw "4022"
+      const resData = await StaffModel.deleteAuthToken(body.id, body.token)
+      if (resData?.Error) throw resData.Error
+      
+      return resData
+    } catch (error) {
+      return {Error: error}
+    }
+  },
+
+  deleteAccountStaff: async (body: {id: string, staff: {id: string}}) => {
+    try {
+      if (!body.staff) throw "4000"
+      const {staff, id} = body
+
+      const valid = validateDeleteStaffParams(staff)
+      if (!valid) throw "4022"
+      
+      // An admin can only delete a staff with no admin privileges
+      // Only admin an admin can delete is itself
+      const foundStaff = await knex('staff').where({id: staff.id}).select('isAdmin', 'id')
+      if (foundStaff.length === 0 || foundStaff === 0) throw "4002"
+      if (foundStaff[0].isAdmin) {
+        if (id !== foundStaff.id) throw "4003"
+      }
+
+      const resData = await StaffModel.deleteAccountStaff(staff)
+      if (resData?.Error) throw resData.Error
+      return resData
+    } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   }

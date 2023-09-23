@@ -22,13 +22,35 @@ const StaffLoginSchema = {
   properties: {
     email: {type: "string", format: "email"},
     password: {type: "string", format: "password"}
-  }
+  },
+  required: ["email", "password"]
 }
 
+const StaffDeleteSchema = {
+  type: "object",
+  properties: {
+    id: {type: "string", format: "uuid"},
+  },
+  required: ["id"]
+}
+const StaffLogoutSchema = {
+  type: "object",
+  properties: {
+    token: { type: "string" },
+    id: {type: "string", format: "uuid"}
+  },
+  required: ["token", "id"]
+}
+
+const validateStaffLogoutParams = ajv.compile(StaffLogoutSchema)
 const validateCreateStaffParams = ajv.compile(StaffCreateSchema)
 const validateLoginStaffParams = ajv.compile(StaffLoginSchema)
+const validateDeleteStaffParams = ajv.compile(StaffDeleteSchema)
+
 
 export {
   validateCreateStaffParams,
-  validateLoginStaffParams
+  validateLoginStaffParams,
+  validateDeleteStaffParams,
+  validateStaffLogoutParams,
 }

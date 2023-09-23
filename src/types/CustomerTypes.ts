@@ -1,4 +1,4 @@
-export interface CustomerType {
+interface CustomerType {
   id: string,
   name: string,
   last_name: string,
@@ -16,7 +16,26 @@ export interface CustomerType {
   tokens?: string[],
 }
 
-export type PostgresError = {
+interface CustomerUpdateType {
+  password: string
+  updates: {
+    name: string,
+    last_name: string,
+    birth_date: string,
+    email: string,
+    password: string,
+    phone: string,
+    gender: string,
+    address: string,
+    state?: string,
+    city: string,
+    province: string,
+    country: string,
+    zip_code: string,
+  }
+}
+
+type PostgresError = {
     length: number,
     name: string,
     severity: string,
@@ -28,4 +47,9 @@ export type PostgresError = {
     file: string,
     line: string,
     routine: string
+}
+
+export {
+  CustomerType,
+  CustomerUpdateType
 }
