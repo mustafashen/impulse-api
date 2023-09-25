@@ -16,7 +16,6 @@ const StaffController = {
       if (!body.staff) throw "4000"
       const {staff} = body
       staff.id = uuidv4()
-      staff.tokens = []
       
       const valid = validateCreateStaffParams(staff)
       if (!valid) throw "4022"
@@ -47,7 +46,7 @@ const StaffController = {
       // generate authentication token and add to db
       const jwt = await generateAuthToken(foundUser.id)
       // return the auth token
-      const resData = await StaffModel.addNewAuthToken(foundUser.id, jwt)
+      const resData = await StaffModel.addNewAuthToken({staffId: foundUser.id, token: jwt, id: uuidv4()})
       if (resData.Error) throw resData.Error
       else if (resData.Success) return {token: jwt}
       else throw "Unexpected error during login"

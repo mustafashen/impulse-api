@@ -16,7 +16,6 @@ const CustomerController = {
     try {
       const {customer} = body
       customer.id = uuidv4()
-      customer.tokens = []
       const valid = validateCustomerSignupParams(customer)
       if (!valid) throw "4022"
  
@@ -43,7 +42,7 @@ const CustomerController = {
       if (!isMatch) throw "4001"
 
       const token = await generateAuthToken(searchResult[0].id)
-      CustomerModel.addNewAuthToken(searchResult[0].id, token)
+      CustomerModel.addNewAuthToken({customerId: searchResult[0].id, token, id: uuidv4()})
       return {token}
     } catch (error) {
       return {Error: error}

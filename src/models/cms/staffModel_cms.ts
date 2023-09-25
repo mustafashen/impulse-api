@@ -27,16 +27,10 @@ const StaffModel = {
     }
   },
 
-  addNewAuthToken: async (staffId: string, token: string) => {
+  addNewAuthToken: async (newToken: {id: string, staffId: string, token: string}) => {
     try {
-      console.log(staffId)
-      const tokensCol = await knex('staff').where({id: staffId})
-      console.log(tokensCol)
-      const currentTokens = tokensCol[0].tokens
- 
-      const res = await knex('staff')
-        .where({id: staffId})
-        .update({'tokens': [...currentTokens, token]})
+      const {id, staffId, token} = newToken
+      const res = await knex('staff_token').insert({id, token, staff_id: staffId})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: "true"}
 
@@ -63,13 +57,7 @@ const StaffModel = {
 
   deleteAuthToken: async (staffId: string, token: string) => {
     try {
-      const tokensCol = await knex('staff').where({id: staffId}).select('tokens')
-      const currentTokens = tokensCol[0].tokens
-
-      const newTokens = currentTokens.filter((t: string) => t !== token)
-      const res = await knex('staff')
-      .where({id: staffId})
-      .update({['tokens']: [...newTokens]})
+      const res = await knex('staff_token').delete().where({staff_id: staffId, token})
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 

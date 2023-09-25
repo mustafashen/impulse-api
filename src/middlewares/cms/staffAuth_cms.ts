@@ -18,8 +18,10 @@ async function authenticateStaff(req: Request, res: Response, next: NextFunction
     const foundStaff = await knex('staff').select('*').where({'id': decodedJWT.id})
     if (foundStaff.length === 0) res.status(httpCode).send({Error: message})
     
-    const foundStaffToken = foundStaff[0].tokens
-    if (!foundStaffToken.includes(token)) res.status(httpCode).send({Error: message})
+    const foundTokens = await knex('staff_token').select('token').where('staff_id', decodedJWT.id)
+    const foundTokensArr = foundTokens.map((tokenObj: {token: string}) => tokenObj.token)
+    
+    if (!foundTokensArr.includes(token)) res.status(httpCode).send({Error: message})
     else {
       req.body.token = token
       req.body.id = decodedJWT.id

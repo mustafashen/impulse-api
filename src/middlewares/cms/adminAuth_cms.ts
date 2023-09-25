@@ -21,8 +21,10 @@ async function authenticateAdmin(req: Request, res: Response, next: NextFunction
     
     if (!foundAdmin[0].isAdmin) res.status(httpCode).send({Error: message})
 
-    const foundAdminToken = foundAdmin[0].tokens
-    if (!foundAdminToken.includes(token)) res.status(httpCode).send({Error: message})
+    const foundTokens = await knex('staff_token').select('token').where('staff_id', decodedJWT.id)
+    const foundTokensArr = foundTokens.map((tokenObj: {token: string}) => tokenObj.token)
+
+    if (!foundTokensArr.includes(token)) res.status(httpCode).send({Error: message})
     else {
       req.body.token = token
       req.body.id = decodedJWT.id

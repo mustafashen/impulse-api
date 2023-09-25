@@ -37,17 +37,17 @@ const CustomerModel = {
     }
   },
 
-  addNewAuthToken: async (customerId: string, token: string) => {
+  addNewAuthToken: async (newToken: {id: string, customerId: string, token: string}) => {
     try {
-      const tokensCol = await knex('customer').where({id: customerId}).select('tokens')
-      const currentTokens = tokensCol[0].tokens
-      const res = await knex('customer')
-        .where({id: customerId})
-        .update({['tokens']: [...currentTokens, token]})
+      console.log(newToken)
+      const {id, customerId, token} = newToken
+      const res = await knex('customer_token').insert({id, token, customer_id: customerId})
+      console.log(res)
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
-      
+
     } catch (error: any) {
+      console.log(error)
       if(error.code) {
         return {Error: error.code}
       }
@@ -57,16 +57,10 @@ const CustomerModel = {
 
   deleteAuthToken: async (customerId: string, token: string) => {
     try {
-      const tokensCol = await knex('customer').where({id: customerId}).select('tokens')
-      const currentTokens = tokensCol[0].tokens
-
-      const newTokens = currentTokens.filter((t: string) => t !== token)
-      const res = await knex('customer')
-      .where({id: customerId})
-      .update({['tokens']: [...newTokens]})
+      const res = await knex('customer_token').delete().where({customer_id: customerId, token})
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
-
+      
     } catch (error: any) {
       if(error.code) {
         return {Error: error.code}
