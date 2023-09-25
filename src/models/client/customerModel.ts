@@ -87,13 +87,30 @@ const CustomerModel = {
     const {customer} = body
     try {
       const res = await knex('customer').where({id: body.id}).update({...customer.updates})
+      if (res.length === 0 || res === 0) throw "4004" 
+      return {Success: true}
+
     } catch (error: any) {
       if(error.code) {
         return {Error: error.code}
       }
       return {Error: error}
     }
-  }
+  },
+
+  activateCustomer: async (id: string) => {
+    try {
+      const res = await knex('customer').where({id}).update({is_active: true})
+      if (res.length === 0 || res === 0) throw "4004" 
+      return {Success: true}
+
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
+  },
 }
 
 export  {CustomerModel}

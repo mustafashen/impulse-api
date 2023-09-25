@@ -1,6 +1,7 @@
 const { v4: uuidv4 } = require('uuid')
 import { CustomerModel } from "../../models/client/customerModel"
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 import { CustomerType, CustomerUpdateType } from "../../types/CustomerTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
 import {
@@ -18,7 +19,8 @@ const CustomerController = {
       customer.id = uuidv4()
       const valid = validateCustomerSignupParams(customer)
       if (!valid) throw "4022"
- 
+      
+      customer.is_active = false
       customer.password = await bcrypt.hash(customer.password, 10)
       const resData = await CustomerModel.createCustomer(customer)
       if (resData?.Error) throw resData.Error
@@ -98,6 +100,23 @@ const CustomerController = {
       return resData
     } catch (error) {
       console.log('updateCustomerController', error)
+      return {Error: error}
+    }
+  },
+
+  activateCustomer: async (token: string) => {
+    try {
+      if (!token) throw "4000"
+
+      const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)
+      if (!decodedJWT.id) throw "4000"
+
+      const resData = await CustomerModel.activateCustomer(decodedJWT.id)
+      if (resData?.Error) throw resData.Error
+      return resData
+
+    } catch (error) {
+      console.log('activateCustomerController', error)
       return {Error: error}
     }
   }
