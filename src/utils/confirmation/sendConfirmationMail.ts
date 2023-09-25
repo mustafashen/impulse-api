@@ -1,7 +1,7 @@
 import { transporter } from "../../services/nodemailTransporter";
 
 async function sendConfirmationMail({to, token}: {to: string, token: string}) {
-  const activationAddress = process.env.DOMAIN + '/client/activation/:' + token
+  const activationAddress = '/client/activation/?token=' + token
   await transporter.sendMail({
     from: process.env.SMTP_SENDER,
     to,
