@@ -24,7 +24,6 @@ async function authenticateCustomer(req: Request, res: Response, next: NextFunct
     const foundTokens = await knex('customer_token').select('token').where('customer_id', decodedJWT.id)
     const foundTokensArr = foundTokens.map((tokenObj: {token: string}) => tokenObj.token)
 
-    console.log(foundTokens)
     if (!foundTokensArr.includes(token)) {
       res.status(httpCode).send({Error: message})
     } else {

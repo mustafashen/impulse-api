@@ -17,15 +17,9 @@ const CustomerSignupSchema = {
     password: {type: "string", format: "password"},
     phone: {type: "string", format: "phone"},
     gender: {type: "string"},
-    address: {type: "string"},
-    state: {type: "string"},
-    city: {type: "string"},
-    province: {type: "string"},
-    country: {type: "string"},
-    zip_code: {type: "string"},
-    tokens: {type: "array"}
+    is_active: {type: "boolean"},
   },
-  required: ["id", "name", "last_name", "birth_date", "email", "password", "phone", "gender", "address", "city", "province", "country", "zip_code"],
+  required: ["id", "name", "last_name", "email", "password"],
 }
 
 const CustomerLoginSchema = {
@@ -58,12 +52,7 @@ const CustomerUpdateSchema = {
         password: {type: "string", format: "password"},
         phone: {type: "string", format: "phone"},
         gender: {type: "string"},
-        address: {type: "string"},
-        state: {type: "string"},
-        city: {type: "string"},
-        province: {type: "string"},
-        country: {type: "string"},
-        zip_code: {type: "string"},
+        is_active: {type: "boolean"},
       }
     }
   },

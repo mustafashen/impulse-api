@@ -7,13 +7,7 @@ interface CustomerType {
   password: string,
   phone: string,
   gender: string,
-  address: string,
-  state?: string,
-  city: string,
-  province: string,
-  country: string,
-  zip_code: string,
-  tokens?: string[],
+  is_active: boolean,
 }
 
 interface CustomerUpdateType {
@@ -26,27 +20,8 @@ interface CustomerUpdateType {
     password: string,
     phone: string,
     gender: string,
-    address: string,
-    state?: string,
-    city: string,
-    province: string,
-    country: string,
-    zip_code: string,
+    is_active: boolean,
   }
-}
-
-type PostgresError = {
-    length: number,
-    name: string,
-    severity: string,
-    code: string,
-    detail: string,
-    schema: string,
-    table: string,
-    constraint: string,
-    file: string,
-    line: string,
-    routine: string
 }
 
 export {
