@@ -4,7 +4,6 @@ interface StaffType  {
   email: string,
   password: string,
   name: string,
-  tokens: string[] | []
   isAdmin: false
 }
 
@@ -13,7 +12,18 @@ interface StaffLoginType  {
   password: string
 }
 
+interface StaffUpdateType {
+  id: string,
+  updates: {
+    email: string,
+    password: string,
+    name: string,
+    isAdmin: false  
+  }
+}
+
 export { 
   StaffType,
-  StaffLoginType
+  StaffLoginType,
+  StaffUpdateType
 }

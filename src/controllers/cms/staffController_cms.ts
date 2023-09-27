@@ -1,12 +1,13 @@
 import { knex } from "../../db/knex"
 import { StaffModel } from "../../models/cms/staffModel_cms"
-import { StaffType, StaffLoginType } from "../../types/StaffTypes"
+import { StaffType, StaffLoginType, StaffUpdateType } from "../../types/StaffTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
 import { 
   validateCreateStaffParams, 
   validateLoginStaffParams,
   validateDeleteStaffParams,
-  validateStaffLogoutParams } from "../../utils/validation/cms/staffValidation"
+  validateStaffLogoutParams, 
+  validateStaffUpdateParams} from "../../utils/validation/cms/staffValidation"
 const { v4: uuidv4 } = require('uuid')
 const bcrypt = require('bcrypt')
 
@@ -85,6 +86,25 @@ const StaffController = {
       }
 
       const resData = await StaffModel.deleteAccountStaff(staff)
+      if (resData?.Error) throw resData.Error
+      return resData
+    } catch (error) {
+      console.log(error)
+      return {Error: error}
+    }
+  },
+
+  updateAccountStaff: async (body: StaffUpdateType) => {
+    try {
+      if (!body.updates) throw "4000"
+      const {updates} = body
+
+      const valid = validateStaffUpdateParams(body)
+      if (!valid) throw "4022"
+
+      if (updates.password) updates.password = await bcrypt.hash(updates.password, 10)
+
+      const resData = await StaffModel.updateStaff(body)
       if (resData?.Error) throw resData.Error
       return resData
     } catch (error) {

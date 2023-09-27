@@ -1,5 +1,5 @@
 import { knex } from "../../db/knex"
-import {StaffType, StaffLoginType} from "../../types/StaffTypes"
+import {StaffType, StaffLoginType, StaffUpdateType} from "../../types/StaffTypes"
 
 const StaffModel = {
 
@@ -21,6 +21,17 @@ const StaffModel = {
       const res = await knex('staff').select('id', 'email', 'password').where({email: staff.email})
       if (res.length === 0 || res === 0) throw "4004"
       return res[0]
+    } catch (error: any) {
+      if (error.code) return {Error: error.code}
+      return {Error: error}
+    }
+  },
+
+  updateStaff: async (body: StaffUpdateType) => {
+    try {
+      const res = await knex('staff').update(body.updates).where({id: body.id})
+      if (res.length === 0 || res === 0) throw "4004"
+      return {Success: true}
     } catch (error: any) {
       if (error.code) return {Error: error.code}
       return {Error: error}

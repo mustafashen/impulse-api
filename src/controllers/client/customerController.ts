@@ -95,6 +95,8 @@ const CustomerController = {
       const isMatch = await bcrypt.compare(customer.password, searchResult[0].password)
       if (!isMatch) throw "4001"
 
+      if (customer.password) customer.password = await bcrypt.hash(customer.password, 10)
+
       const resData = await CustomerModel.updateCustomer(body)
       if (resData?.Error) throw resData.Error
       return resData
