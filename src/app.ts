@@ -14,9 +14,19 @@ import { categoryRouter_cms } from './routes/cms/categoryRoute_cms'
 import { productRouter_cms } from './routes/cms/productRouter_cms'
 import { productRouter } from './routes/client/productRoute'
 import { addressRouter } from './routes/client/addressRoute'
+import rateLimit from 'express-rate-limit'
+
+const limiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
+  max: 100, // Max requests per hour
+  message: 'Rate limit exceeded. Please try again later.',
+})
+
 
 const app = express()
 app.use(express.json())
+app.use(limiter)
+
 app.use('/client/customer', customerRouter)
 app.use('/client/category', categoryRouter)
 app.use('/client/product', productRouter)
