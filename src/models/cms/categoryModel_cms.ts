@@ -29,8 +29,8 @@ const CategoryModel = {
 
   updateCategory: async (category: UpdateCategoryType) => {
     try {
-      const {name, parentName} = category.updates
-      const res = await knex('category').where({name: category.nameToUpdate}).update({name, parent_name: parentName})
+      const {name, parent_id} = category.updates
+      const res = await knex('category').where({name: category.nameToUpdate}).update({name, parent_id})
       console.log(res)
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}

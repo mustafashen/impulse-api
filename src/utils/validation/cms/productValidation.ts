@@ -13,7 +13,7 @@ const createProductSchema = {
     stock: { type: "number" },
     description: { type: "string" },
     features: { type: "object" },
-    categoryName: { type: "string" },
+    category_id: { type: "string", format: "uuid" },
   },
   required: ["id", "name", "price", "stock", "description", "categoryName"]
 }
@@ -30,7 +30,7 @@ const updateProductSchema = {
         stock: { type: "number" },
         description: { type: "string" },
         features: { type: "object" },
-        categoryName: { type: "string" },
+        category_id: { type: "string", format: "uuid" },
       }
     }
   },

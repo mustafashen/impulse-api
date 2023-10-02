@@ -12,7 +12,7 @@ const ProductModel_cms = {
           stock: product.stock,
           description: product.description,
           features: product.features,
-          category_name: product.categoryName
+          category_id: product.category_id
         })
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
@@ -35,7 +35,7 @@ const ProductModel_cms = {
           stock: updates?.stock,
           description: updates?.description,
           features: updates?.features,
-          category_name: updates?.categoryName
+          category_id: updates?.category_id
         })
         .where({id: product.id})
       if (res.length === 0 || res === 0) throw "4004"

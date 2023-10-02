@@ -6,7 +6,7 @@ interface ProductType {
   stock: number,
   description: string,
   features: object,
-  categoryName: string,
+  category_id: string,
 }
 
 interface ProductUpdateType {
@@ -17,7 +17,7 @@ interface ProductUpdateType {
     stock: number,
     description: string,
     features: object,
-    categoryName: string,
+    category_id: string,
   }
 }
 

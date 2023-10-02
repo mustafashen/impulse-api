@@ -1,6 +1,6 @@
 import { CustomerController } from "../../controllers/client/customerController"
 import express, {Request, Response} from "express"
-import { authenticateCustomer } from "../../middlewares/client/auth"
+import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 
 const customerRouter = express.Router()

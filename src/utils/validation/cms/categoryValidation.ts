@@ -10,7 +10,7 @@ const CategoryCreateSchema = {
   properties: {
     id: {type: "string"},
     name: {type: "string"},
-    parentName: {type: "string"}
+    parent_id: {type: "string", format: "uuid"}
   },
   required: ["id", "name"]
 }
@@ -29,7 +29,7 @@ const CategoryUpdateSchema = {
     nameToUpdate: {type: "string"},
     updates: {type: "object", properties: {
       name: {type: "string"},
-      parentName: {type: "string"}
+      parent_id: {type: "string", format: "uuid"}
     }}
   },
   required: ["nameToUpdate", "updates"]

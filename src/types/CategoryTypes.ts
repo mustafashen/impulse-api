@@ -2,14 +2,14 @@
 interface CreateCategoryType {
   id: string,
   name: string,
-  parentName: string
+  parent_id: string
 }
 
 interface UpdateCategoryType {
   nameToUpdate: string,
   updates: {
     name: string,
-    parentName: string
+    parent_id: string
   }
 }
 

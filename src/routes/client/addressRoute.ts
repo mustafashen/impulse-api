@@ -1,7 +1,7 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { AddressController } from "../../controllers/client/addressController"
-import { authenticateCustomer } from "../../middlewares/client/auth"
+import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 
 const addressRouter = express.Router()
 
