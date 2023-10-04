@@ -18,7 +18,7 @@ async function actionOwnerAuth(req: Request, res: Response, next: NextFunction) 
     const token = req.headers.authorization?.replace('Bearer ', '')
     if (!token) {
       req.body.guest = true
-      req.body.quest_id = uuidv4()
+      req.body.id = uuidv4()
       next()
     }
 
