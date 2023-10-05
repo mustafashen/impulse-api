@@ -20,30 +20,30 @@ async function actionOwnerAuth(req: Request, res: Response, next: NextFunction) 
       req.body.guest = true
       req.body.id = uuidv4()
       next()
-    }
-
-    // Verify token, if id is absent in it respond unauthorized
-    const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)
-    if (!decodedJWT.id) res.status(httpCode).send({Error: message})
-
-    // Find the customer with the id in received via token
-    const foundCustomer = await knex('customer').select('id').where('id', decodedJWT.id)
-    if (foundCustomer.length === 0) res.status(httpCode).send({Error: message})
-
-    const foundTokens = await knex('customer_token').select('token').where('customer_id', decodedJWT.id)
-    const foundTokensArr = foundTokens.map((tokenObj: {token: string}) => tokenObj.token)
-
-    if (!foundTokensArr.includes(token)) {
-      res.status(httpCode).send({Error: message})
+      
     } else {
-      req.body.id = foundCustomer[0].id
-      req.body.token = token
-      next()
-    }
+      // Verify token, if id is absent in it respond unauthorized
+      const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)
+      if (!decodedJWT.id) throw {code: httpCode, message}
 
-  } catch (error) {
+      // Find the customer with the id in received via token
+      const foundCustomer = await knex('customer').select('id').where('id', decodedJWT.id)
+      if (foundCustomer.length === 0) throw {code: "4004", message}
+
+      const foundTokens = await knex('customer_token').select('token').where('customer_id', decodedJWT.id)
+      const foundTokensArr = foundTokens.map((tokenObj: {token: string}) => tokenObj.token)
+
+      if (!foundTokensArr.includes(token)) {
+        throw {code: httpCode, message}
+      } else {
+        req.body.id = foundCustomer[0].id
+        req.body.token = token
+        next()
+      }
+    }
+  } catch (error: any) {
     console.log(error)
-    res.status(401).send({Error: 'Error during authentication'})
+    res.status(error.code).send({Error: error.message})
   }
 }
 
