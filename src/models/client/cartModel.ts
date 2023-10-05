@@ -67,7 +67,7 @@ const CartModel = {
     }
   },
 
-  deleteCartLine:async (cart_line_id: string) => {
+  deleteCartLine: async (cart_line_id: string) => {
     try {
       const res = await knex('cart_line').where({id: cart_line_id}).delete()
       if (res.length === 0 || res === 0) throw "4004"
@@ -80,7 +80,7 @@ const CartModel = {
     }
   },
   
-  updateCartLine:async (cart_line: CartLineUpdateType) => {
+  updateCartLine: async (cart_line: CartLineUpdateType) => {
       try {
         const res = await knex('cart_line').where({id: cart_line.cart_line_id}).update(cart_line.updates)
         if (res.length === 0 || res === 0) throw "4004"

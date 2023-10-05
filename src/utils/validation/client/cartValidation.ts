@@ -10,14 +10,23 @@ const CartLinesReadSchema = {
   type: "object",
   properties: {
     cart_id: {type: "string", format: "uuid"},
-    id: {type: "string", format: "uuid"},
-    guest: {type: "boolean"},
   },
   required: ['cart_id']
 }
 
-const validateCartLinesReadParams = ajv.compile(CartLinesReadSchema)
+const CartCreateSchema = {
+  type: "object",
+  properties: {
+    customer_id: {type: "string", format: "uuid"},
+    location: {type: "string"},
+    id: {type: "string", format: "uuid"},
+  },
+  required: ['id']
+}
 
+const validateCartLinesReadParams = ajv.compile(CartLinesReadSchema)
+const validateCartCreateParams = ajv.compile(CartCreateSchema)
 export {
   validateCartLinesReadParams,
+  validateCartCreateParams
 }

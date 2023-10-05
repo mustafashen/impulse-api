@@ -16,5 +16,6 @@ interface  CartLineUpdateType {
 interface CartType {
   id: string,
   customer_id?: string,
+  location?: string,
 }
 
