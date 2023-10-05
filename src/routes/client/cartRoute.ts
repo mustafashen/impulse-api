@@ -3,17 +3,17 @@ import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { CartController } from "../../controllers/client/cartController"
 import { actionOwnerAuth } from "../../middlewares/client/actionOwnerAuth"
 
-const cartRoute = express.Router()
+const cartRouter = express.Router()
 
 // Cart items read
 // Create cart
 // Add cart item
 // Delete cart item
-// Update Cart item
+// Update Cart items
 
 
 
-cartRoute.post('/list', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/list', actionOwnerAuth, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.readCartLines(req.body)
     if (resData?.Error) throw resData.Error
@@ -26,7 +26,7 @@ cartRoute.post('/list', actionOwnerAuth, async (req: Request, res: Response) => 
   }
 })
 
-cartRoute.post('/create-cart', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/create', actionOwnerAuth, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.createCart(req.body)
     if (resData?.Error) throw resData.Error
@@ -39,5 +39,5 @@ cartRoute.post('/create-cart', actionOwnerAuth, async (req: Request, res: Respon
 })
 
 export {
-  cartRoute
+  cartRouter
 }
