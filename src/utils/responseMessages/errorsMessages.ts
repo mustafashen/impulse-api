@@ -22,7 +22,7 @@ const errorMessages = (code: string) => {
       return { httpCode: 504, message: {DB: "Statement timeout"} }
 
     // Server errors
-    case "4003":
+    case "4000":
       return { httpCode: 400, message: {Server: "Bad request"}}
     case "4001":
       return { httpCode: 401, message: {Server: "Authentication error"} }
