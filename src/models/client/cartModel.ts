@@ -91,6 +91,19 @@ const CartModel = {
         }
         return {Error: error}
       }
+  },
+
+  findCartProduct: async ({product_id, cart_id}: {product_id: string, cart_id: string}) => {
+    try {
+      const res = await knex('cart_line').where({product_id, cart_id})
+      if (res.length === 0 || res === 0) throw "4004"
+      return res
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
   }
 
 

@@ -72,7 +72,40 @@ const CartController = {
       console.log(error)
       return {Error: error}
     }
-  }
+  },
+
+  createCartLine: async (body: {cart_line: CartLineType}) => {
+    try {
+      const valid = validateCartCreateParams(body.cart_line)
+      if (!valid) throw "4000"
+
+      // check if product exist in the cart
+      const foundCartLine = await CartModel.findCartProduct({
+        product_id: body.cart_line.product_id,
+        cart_id: body.cart_line.cart_id
+      })
+      if (foundCartLine.Error === "4004") {
+        const resData = await CartModel.createCart(body.cart_line)
+        if (resData.Error) throw resData.Error
+        return resData
+      } else {
+        const cart_line = foundCartLine[0]
+        const newQuantity = ++cart_line.quantity
+        
+        const resData = await CartModel.updateCartLine({
+          cart_line_id: cart_line.id,
+          updates: {
+            quantity: newQuantity
+          }
+        })
+        
+        if (resData.Error) throw resData.Error
+        return resData
+      }
+    } catch (error) {
+      
+    }
+  },
 }
 
 export {
