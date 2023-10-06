@@ -38,6 +38,18 @@ cartRouter.post('/create', actionOwnerAuth, async (req: Request, res: Response) 
   }
 })
 
+cartRouter.post('/line-create', actionOwnerAuth, async (req: Request, res: Response) => {
+  try {
+    const resData = await CartController.createCartLine(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(201).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
 export {
   cartRouter
 }
