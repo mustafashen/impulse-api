@@ -1,5 +1,5 @@
 import { CartModel } from "../../models/client/cartModel"
-import { validateCartCreateParams, validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
+import { validateCartCreateParams, validateCartLineCreateParams, validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -74,36 +74,65 @@ const CartController = {
     }
   },
 
-  createCartLine: async (body: {cart_line: CartLineType}) => {
+  createCartLine: async (body: {id?: string, location?: string, cart_line: CartLineType}) => {
     try {
-      const valid = validateCartCreateParams(body.cart_line)
-      if (!valid) throw "4000"
+     const {cart_line} = body
+     if (!cart_line) throw "4000"
 
-      // check if product exist in the cart
-      const foundCartLine = await CartModel.findCartProduct({
-        product_id: body.cart_line.product_id,
-        cart_id: body.cart_line.cart_id
+    // Check if cart id defined
+    // If not, create a new cart
+    if (!cart_line.cart_id) {
+     const newCart = await CartModel.createCart({
+      id: uuidv4(),
+      customer_id: body.id || undefined,
+      location: body.location || undefined
+     })
+     cart_line.cart_id = newCart[0].id
+    }
+
+    // search for the cart
+    // If not found throw 4004
+    const targetCart = await CartModel.findCart(cart_line.cart_id)
+    if (targetCart.Error) throw targetCart.Error
+
+    // If it is exist
+    // create an id for cart
+    // set quantity
+    // run validation checks for cart_line
+    cart_line.id = uuidv4()
+    cart_line.quantity = cart_line.quantity ? cart_line.quantity : 1
+    const valid = validateCartLineCreateParams(cart_line)
+    if (!valid) throw "4022"
+
+    // check if cart line for the product id exists for the same cart
+    const lineProduct = await CartModel.findCartProduct({
+      product_id: cart_line.product_id,
+      cart_id: cart_line.cart_id
+    })
+    if (lineProduct.Error) throw lineProduct.Error
+
+    // if it does just update the quantity and return
+    if (lineProduct.length > 0) {
+      const resData = await CartModel.updateCartLine({
+        cart_line_id: lineProduct[0].id,
+        updates: {
+          quantity: lineProduct[0].quantity + cart_line.quantity
+        }
       })
-      if (foundCartLine.Error === "4004") {
-        const resData = await CartModel.createCart(body.cart_line)
-        if (resData.Error) throw resData.Error
-        return resData
-      } else {
-        const cart_line = foundCartLine[0]
-        const newQuantity = ++cart_line.quantity
-        
-        const resData = await CartModel.updateCartLine({
-          cart_line_id: cart_line.id,
-          updates: {
-            quantity: newQuantity
-          }
-        })
-        
-        if (resData.Error) throw resData.Error
-        return resData
-      }
+      if (resData.Error) throw resData.Error
+      return resData
+    } else {
+    // otherwise;
+    // Call create line model to create cart line
+    // check for errors 
+     const resData = await CartModel.createCartLine(cart_line)
+     if (resData.Error) throw resData.Error
+     return resData
+    }
+
     } catch (error) {
-      
+      console.log(error)
+      return {Error: error}
     }
   },
 }

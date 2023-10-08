@@ -15,7 +15,7 @@ const createProductSchema = {
     features: { type: "object" },
     category_id: { type: "string", format: "uuid" },
   },
-  required: ["id", "name", "price", "stock", "description", "categoryName"]
+  required: ["id", "name", "price", "stock", "description", "category_id"]
 }
 
 const updateProductSchema = {

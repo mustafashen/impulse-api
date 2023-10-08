@@ -16,7 +16,7 @@ const ProductController_cms = {
       product.id = uuidv4()
 
       const valid = validateCreateProductParams(product)
-      if (!valid) throw "4002"
+      if (!valid) throw "4022"
 
       const resData = await ProductModel_cms.createProductModel(product)
       if (resData.Error) throw resData.Error

@@ -45,7 +45,7 @@ const CartModel = {
     try {
       const res = await knex('cart').insert(cart)
       if (res.length === 0 || res === 0) throw "4004"
-      return {Success: true}
+      return res
     } catch (error: any) {
       if(error.code) {
         return {Error: error.code}
@@ -93,10 +93,10 @@ const CartModel = {
       }
   },
 
-  findCartProduct: async ({product_id, cart_id}: {product_id: string, cart_id: string}) => {
+  findCartProduct: async (lineInfo: {product_id: string, cart_id: string}) => {
     try {
-      const res = await knex('cart_line').where({product_id, cart_id})
-      if (res.length === 0 || res === 0) throw "4004"
+      console.log(lineInfo)
+      const res = await knex('cart_line').where(lineInfo)
       return res
     } catch (error: any) {
       if(error.code) {

@@ -9,8 +9,8 @@ const {httpCode, message} = errorMessages("4003")
 // This auth doesn't make strict checks
 // It justs looks up if there is a logged in user
 // If there is no logged in user
-// It proceeds anyway
-// Proceeding routes must make actions for a guest user
+// It proceeds as a guest
+// Proceeding routes must make actions for a guest user when no user is absent
 async function actionOwnerAuth(req: Request, res: Response, next: NextFunction) {
   try {
 

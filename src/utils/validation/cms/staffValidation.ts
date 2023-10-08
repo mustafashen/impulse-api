@@ -11,10 +11,9 @@ const StaffCreateSchema = {
     email: {type: "string", format: "email"},
     password: {type: "string", format: "password"},
     name: {type: "string"},
-    tokens: {type: "array"},
     isAdmin: {type: "boolean"}
   },
-  required: ["id", "email", "password", "name", "tokens"]
+  required: ["id", "email", "password", "name"]
 }
 
 const StaffLoginSchema = {

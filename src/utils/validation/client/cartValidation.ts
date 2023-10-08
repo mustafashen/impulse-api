@@ -31,12 +31,15 @@ const CartLineCreateSchema = {
     product_id: {type: "string", format: "uuid"},
     quantity: {type: "number"}
   },
-  required: ['id', 'cart_id', 'product_id']
+  required: ['product_id', 'quantity', 'cart_id', 'id']
 }
 
 const validateCartLinesReadParams = ajv.compile(CartLinesReadSchema)
 const validateCartCreateParams = ajv.compile(CartCreateSchema)
+const validateCartLineCreateParams = ajv.compile(CartLineCreateSchema)
+
 export {
   validateCartLinesReadParams,
-  validateCartCreateParams
+  validateCartCreateParams,
+  validateCartLineCreateParams
 }
