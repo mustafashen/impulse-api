@@ -7,9 +7,13 @@ interface  CartLineType {
 }
 
 interface  CartLineUpdateType {
-  cart_line_id: string,
-  updates: {
-    quantity: number,
+  id: string
+  cart_line: {
+    id: string,
+    cart_id: string,
+    updates: {
+      quantity: number,
+    }
   }
 }
 

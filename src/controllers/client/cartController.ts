@@ -107,7 +107,7 @@ const CartController = {
     // if it does just update the quantity and return
     if (lineProduct.length > 0) {
       const resData = await CartModel.updateCartLine({
-        cart_line_id: lineProduct[0].id,
+        id: lineProduct[0].id,
         updates: {
           quantity: lineProduct[0].quantity + cart_line.quantity
         }
@@ -149,6 +149,27 @@ const CartController = {
       return {Error: error}
     }
   },
+
+  updateCartLine: async (body: CartLineUpdateType) => {
+    try {
+      const {cart_line} = body
+      if (!cart_line) throw "4000"
+      
+      const valid = validateCartLineDeleteParams(body)
+      if (!valid) throw "4022"
+
+      const foundCart = await CartModel.findCart(cart_line.cart_id)
+      if (foundCart.Error) throw foundCart.Error
+      else if (body.id !== foundCart.customer_id)
+        throw "4003"
+      
+      const resData = await CartModel.updateCartLine(cart_line)
+      if (resData.Error) throw resData.Error
+      return resData
+    } catch (error: any) {
+      
+    }
+  }
   // TODO: Update cart controller
   // TODO: Find cart for the customer controller
 }
