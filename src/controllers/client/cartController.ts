@@ -85,8 +85,6 @@ const CartController = {
     if (targetCart.Error) throw targetCart.Error
 
     // We check if the action owner's id matches the customer id of the cart
-    // If there is no customer id for the cart (guest), we proceed 
-    // If there is a customer for the cart, we check if the action owner is the same as the cart owner
     if (targetCart.Error) throw targetCart.Error
     else if (body.id !== targetCart[0].customer_id)
       throw "4003"
