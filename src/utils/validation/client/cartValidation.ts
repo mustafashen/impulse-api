@@ -34,12 +34,23 @@ const CartLineCreateSchema = {
   required: ['product_id', 'quantity', 'cart_id', 'id']
 }
 
+const CartLineDeleteSchema = {
+  type: "object",
+  properties: {
+    id: {type: "string", format: "uuid"},
+    cart_id: {type: "string", format: "uuid"},
+  },
+  required: ['id']
+}
+
 const validateCartLinesReadParams = ajv.compile(CartLinesReadSchema)
 const validateCartCreateParams = ajv.compile(CartCreateSchema)
 const validateCartLineCreateParams = ajv.compile(CartLineCreateSchema)
+const validateCartLineDeleteParams = ajv.compile(CartLineDeleteSchema)
 
 export {
   validateCartLinesReadParams,
   validateCartCreateParams,
-  validateCartLineCreateParams
+  validateCartLineCreateParams,
+  validateCartLineDeleteParams
 }

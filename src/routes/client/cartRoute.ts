@@ -50,6 +50,18 @@ cartRouter.post('/line-create', actionOwnerAuth, async (req: Request, res: Respo
   }
 })
 
+cartRouter.delete('/line-delete', actionOwnerAuth, async (req: Request, res: Response) =>{
+  try {
+    const resData = await CartController.deleteCartLine(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(200).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
 export {
   cartRouter
 }
