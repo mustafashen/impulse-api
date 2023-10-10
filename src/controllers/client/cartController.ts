@@ -154,20 +154,21 @@ const CartController = {
     try {
       const {cart_line} = body
       if (!cart_line) throw "4000"
-      
-      const valid = validateCartLineDeleteParams(body)
-      if (!valid) throw "4022"
 
+      const valid = validateCartLineDeleteParams(cart_line)
+      if (!valid) throw "4022"
+      console.log(body)
       const foundCart = await CartModel.findCart(cart_line.cart_id)
       if (foundCart.Error) throw foundCart.Error
-      else if (body.id !== foundCart.customer_id)
+      else if (body.guest !== true && body.id !== foundCart.customer_id)
         throw "4003"
-      
+     
       const resData = await CartModel.updateCartLine(cart_line)
       if (resData.Error) throw resData.Error
       return resData
     } catch (error: any) {
-      
+      console.log(error)
+      return {Error: error}
     }
   }
   // TODO: Update cart controller

@@ -55,6 +55,18 @@ cartRouter.delete('/line-delete', actionOwnerAuth, async (req: Request, res: Res
     const resData = await CartController.deleteCartLine(req.body)
     if (resData?.Error) throw resData.Error
     console.log(resData)
+    res.status(204).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
+cartRouter.put('/line-update', actionOwnerAuth, async (req: Request, res: Response) =>{
+  try {
+    const resData = await CartController.updateCartLine(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
     res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)

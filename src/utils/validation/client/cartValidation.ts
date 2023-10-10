@@ -51,7 +51,7 @@ const CartLineUpdateSchema = {
     updates: {
       type: "object",
       properties: {
-        quantity: {type: "number", required: true},
+        quantity: {type: "number"},
       }
     }
   },

@@ -80,7 +80,7 @@ const CartModel = {
     }
   },
   
-  updateCartLine: async (cart_line: {id: string, cart_id?: string, updates: {quantity: number}}) => {
+  updateCartLine: async (cart_line: {id: string, updates: {quantity: number}}) => {
       try {
         const res = await knex('cart_line').where({id: cart_line.id}).update(cart_line.updates)
         if (res.length === 0 || res === 0) throw "4004"

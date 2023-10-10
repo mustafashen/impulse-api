@@ -8,6 +8,7 @@ interface  CartLineType {
 
 interface  CartLineUpdateType {
   id: string
+  guest: boolean,
   cart_line: {
     id: string,
     cart_id: string,
