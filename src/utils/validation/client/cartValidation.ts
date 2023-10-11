@@ -15,6 +15,15 @@ const CartCreateSchema = {
   required: ['id']
 }
 
+const CustomerCartFindSchema = {
+  type: "object",
+  properties: {
+    id: {type: "string", format: "uuid"},
+    guest: {type: "boolean"}
+  },
+  required: ['id']
+}
+
 const CartLinesReadSchema = {
   type: "object",
   properties: {
@@ -63,10 +72,12 @@ const validateCartCreateParams = ajv.compile(CartCreateSchema)
 const validateCartLineCreateParams = ajv.compile(CartLineCreateSchema)
 const validateCartLineDeleteParams = ajv.compile(CartLineDeleteSchema)
 const validateCartLineUpdateParams = ajv.compile(CartLineUpdateSchema)
+const validateCustomerCartFindParams = ajv.compile(CustomerCartFindSchema)
 export {
   validateCartLinesReadParams,
   validateCartCreateParams,
   validateCartLineCreateParams,
   validateCartLineDeleteParams,
-  validateCartLineUpdateParams
+  validateCartLineUpdateParams,
+  validateCustomerCartFindParams
 }

@@ -1,5 +1,5 @@
 import { CartModel } from "../../models/client/cartModel"
-import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
+import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLinesReadParams, validateCustomerCartFindParams } from "../../utils/validation/client/cartValidation"
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -170,9 +170,25 @@ const CartController = {
       console.log(error)
       return {Error: error}
     }
-  }
-  // TODO: Update cart controller
-  // TODO: Find cart for the customer controller
+  },
+
+  findCustomerCart: async (body: {id: string, guest?: boolean}) => {
+    try {
+      const {id} = body
+      if (!id) throw "4000"
+
+      const valid = validateCustomerCartFindParams(body)
+      if (!valid) throw "4022"
+
+      const resData = await CartModel.findCustomerCart(id)
+      if (resData.Error) throw resData.Error
+      else if (resData.noCartFound) throw "4004"
+      return resData
+    } catch (error: any) {
+      console.log(error)
+      return {Error: error}
+    }
+  },
 }
 
 export {
