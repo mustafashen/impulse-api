@@ -3,26 +3,13 @@ import {app} from '../../../src/app';
 import { mockInputsCustomer } from './../__mocks__/mockInputsCustomer';
 import { knex } from '../../../src/db/knex';
 import { resetCustomerTable } from '../test-utils/resetTables';
+import { createAccessToken } from '../test-utils/createAccessToken';
 
 const {signupInput, loginInput} = mockInputsCustomer
 
 let accessToken = ''
 beforeAll(async () => {
-  // Signup
-  await request(app)
-  .post('/client/customer/signup')
-  .send(signupInput.body)
-
-  // Login
-  const loginRes = await request(app)
-  .post('/client/customer/login')
-  .send(loginInput.body)
-
-  accessToken = loginRes.body.token
-
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1000)
-  })
+  accessToken = await createAccessToken()
 })
 
 afterEach(async () => {

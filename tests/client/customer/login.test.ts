@@ -14,10 +14,6 @@ beforeAll(async () => {
   .send(signupInput.body)
 })
 
-afterEach(async () => {
-  jest.restoreAllMocks()
-})
-
 afterAll(resetCustomerTable)
 
 describe("Customer Login", () => {

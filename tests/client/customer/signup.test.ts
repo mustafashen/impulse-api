@@ -7,10 +7,6 @@ import { resetCustomerTable } from '../test-utils/resetTables';
 // TODO: update tests for new schema changes
 const {signupInput, loginInput} = mockInputsCustomer
 
-afterEach(async () => {
-  jest.restoreAllMocks()
-})
-
 afterAll(resetCustomerTable)
 
 describe("Customer Signup", () => {
