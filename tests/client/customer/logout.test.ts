@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../src/app';
 import { mockInputsCustomer } from './../__mocks__/mockInputsCustomer';
 import { knex } from '../../../src/db/knex';
-import { resetCustomerTable } from '../test-utils/resetCustomerTable';
+import { resetCustomerTable } from '../test-utils/resetTables';
 
 const {signupInput, loginInput} = mockInputsCustomer
 
@@ -10,12 +10,12 @@ let accessToken = ''
 beforeAll(async () => {
   // Signup
   await request(app)
-  .post('/customer/signup')
+  .post('/client/customer/signup')
   .send(signupInput.body)
 
   // Login
   const loginRes = await request(app)
-  .post('/customer/login')
+  .post('/client/customer/login')
   .send(loginInput.body)
 
   accessToken = loginRes.body.token
@@ -39,7 +39,7 @@ describe('Customer Logout', () => {
     expect(accountsBefore[0].tokens).toHaveLength(1)
 
     const logoutRes = await request(app)
-      .delete('/customer/logout')
+      .delete('/client/customer/logout')
       .set('Authorization', accessToken) 
     expect(logoutRes.status).toBe(200)
 
