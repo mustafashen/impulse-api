@@ -9,6 +9,16 @@ async function resetCustomerTable() {
   })  
 }
 
+async function resetWishlistTable() {
+  await knex('wishlist').delete()
+  await knex.destroy()
+
+  await new Promise((resolve) => {
+    setTimeout(resolve, 1000)
+  })  
+}
+
 export {
-  resetCustomerTable
+  resetCustomerTable,
+  resetWishlistTable,
 }
