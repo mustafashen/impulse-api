@@ -70,31 +70,26 @@ const WishlistController = {
       const {wishlist_line} = body
       if (!wishlist_line || wishlist_line.wishlist_id) throw "4000"
  
-     // search for the cart
-     // If not found throw 4004
      const targetWishlist = await WishlistModel.findWishlist(wishlist_line.wishlist_id)
      if (targetWishlist.Error) throw targetWishlist.Error
  
-     // We check if the action owner's id matches the customer id of the cart
+
      if (targetWishlist.Error) throw targetWishlist.Error
      else if (body.id !== targetWishlist[0].customer_id)
        throw "4003"
        
-     // If it is exist
-     // create an id for cart
-     // set quantity
-     // run validation checks for cart_line
+
      wishlist_line.id = uuidv4()
      const valid = validateWishlistLineCreateParams(wishlist_line)
      if (!valid) throw "4022"
  
-     // check if cart line for the product id exists for the same cart
+
      const lineProduct = await WishlistModel.findWishlistProduct({
        product_id: wishlist_line.product_id,
        wishlist_id: wishlist_line.wishlist_id
      })
      if (lineProduct.Error) throw lineProduct.Error
-     // if it does just update the quantity and return
+
      if (lineProduct.length > 0) {
       const resData = await WishlistModel.deleteWishlistLine(lineProduct[0].id)
       if (resData.Error) throw resData.Error

@@ -29,9 +29,9 @@ wishlistRoute.post('/create', actionOwnerAuth, async (req: Request, res: Respons
   }
 })
 
-wishlistRoute.post('/line-create', actionOwnerAuth, async (req: Request, res: Response) => {
+wishlistRoute.post('/line-toggle', actionOwnerAuth, async (req: Request, res: Response) => {
   try {
-    const resData = await WishlistController.createWishlistLine(req.body)
+    const resData = await WishlistController.toggleWishlistLine(req.body)
     if (resData?.Error) throw resData.Error
     console.log(resData)
     res.status(201).send(resData)
@@ -41,14 +41,6 @@ wishlistRoute.post('/line-create', actionOwnerAuth, async (req: Request, res: Re
   }
 })
 
-wishlistRoute.delete('/line-delete', actionOwnerAuth, async (req: Request, res: Response) => {
-  try {
-    const resData = await WishlistController.deleteWishlistLine(req.body)
-    if (resData?.Error) throw resData.Error
-    console.log(resData)
-    res.status(204).send(resData)
-  } catch (error: any) {
-    const {httpCode, message} = errorMessages(error)
-    res.status(httpCode).send(message)
-  }
-})
+export {
+  wishlistRoute
+}
