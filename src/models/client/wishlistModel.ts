@@ -67,7 +67,7 @@ const WishlistModel = {
 
   findCustomerWishlist: async (wishlist_id: string) => {
     try {
-      const res = await knex('wishlist').where({wishlist_id})
+      const res = await knex('wishlist').where({id: wishlist_id})
       if (res.length === 0 || res === 0) return {noWishlistFound: true}
       return res
     } catch (error: any) {
