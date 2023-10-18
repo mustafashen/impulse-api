@@ -22,23 +22,37 @@ const ReviewModel = {
 			if (res.length === 0 || res === 0) throw "4004" 
       return res
 		} catch (error: any) {
-      if(error.code) {
-        return {Error: error.code}
-      }
-      return {Error: error}
+				if(error.code) {
+					return {Error: error.code}
+				}
+				return {Error: error}
+		}
+	},
+
+	getReviewById: async (review_id: string) => {
+		try {
+			const res = await knex('review').where({id: review_id})
+			if (res.length === 0 || res === 0) throw "4004" 
+      return res
+		} catch (error: any) {
+				if(error.code) {
+					return {Error: error.code}
+				}
+				return {Error: error}
 		}
 	},
 
 	createReview: async (review: ReviewType) => {
 		try {
-			const res = await knex('cart').insert(review)
+			console.log(review)
+			const res = await knex('review').insert(review)
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
 		} catch (error: any) {
-      if(error.code) {
-        return {Error: error.code}
-      }
-      return {Error: error}
+				if(error.code) {
+					return {Error: error.code}
+				}
+				return {Error: error}
 		}
 	},
 
@@ -48,10 +62,10 @@ const ReviewModel = {
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
 		} catch (error: any) {
-      if(error.code) {
-        return {Error: error.code}
-      }
-      return {Error: error}
+				if(error.code) {
+					return {Error: error.code}
+				}
+				return {Error: error}
 		}
 	},
 
@@ -61,10 +75,10 @@ const ReviewModel = {
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
 		} catch (error: any) {
-			if(error.code) {
-					return {Error: error.code}
-			}
-			return {Error: error}
+				if(error.code) {
+						return {Error: error.code}
+				}
+				return {Error: error}
 		}
 	},
 }

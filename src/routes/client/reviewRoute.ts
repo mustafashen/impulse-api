@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { ReviewController } from "../../controllers/client/reviewController"
+import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 
 const reviewRouter = express.Router()
 
@@ -30,7 +31,7 @@ reviewRouter.post('/product-reviews', async (req: Request, res: Response) => {
     }
 })
 
-reviewRouter.post('/create', async (req: Request, res: Response) => {
+reviewRouter.post('/create', authenticateCustomer, async (req: Request, res: Response) => {
     try {
       const resData = await ReviewController.createReview(req.body)
       if (resData?.Error) throw resData.Error
@@ -43,7 +44,7 @@ reviewRouter.post('/create', async (req: Request, res: Response) => {
     }
 })
 
-reviewRouter.put('/update', async (req: Request, res: Response) => {
+reviewRouter.put('/update', authenticateCustomer, async (req: Request, res: Response) => {
     try {
       const resData = await ReviewController.updateReview(req.body)
       if (resData?.Error) throw resData.Error
@@ -56,7 +57,7 @@ reviewRouter.put('/update', async (req: Request, res: Response) => {
     }
 })
 
-reviewRouter.put('/delete', async (req: Request, res: Response) => {
+reviewRouter.delete('/delete', authenticateCustomer, async (req: Request, res: Response) => {
     try {
       const resData = await ReviewController.deleteReview(req.body)
       if (resData?.Error) throw resData.Error

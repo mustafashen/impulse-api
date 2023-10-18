@@ -1,5 +1,6 @@
 
 interface ReviewType {
+	id: string,
 	rating: number,
 	comment: string,
 	product_id: string,

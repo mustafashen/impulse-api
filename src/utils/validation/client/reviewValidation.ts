@@ -15,9 +15,9 @@ const ReviewByCustomerSchema = {
 const ReviewByProductSchema = {
   type: "object",
   properties: {
-    customer_id: {type: "string", format: "uuid"}
+    product_id: {type: "string", format: "uuid"}
   },
-  required: ['customer_id']
+  required: ['product_id']
 }
 
 const ReviewCreateSchema = {
@@ -44,7 +44,7 @@ const ReviewUpdateSchema = {
       }
     }
   },
-  required: ['id', 'customer_id', 'product_id', 'rating', 'comment']
+  required: ['id']
 }
 
 const ReviewDeleteSchema = {

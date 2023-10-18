@@ -17,6 +17,7 @@ import { addressRouter } from './routes/client/addressRoute'
 import rateLimit from 'express-rate-limit'
 import { cartRouter } from './routes/client/cartRoute'
 import { wishlistRoute } from './routes/client/wishlistRoute'
+import { reviewRouter } from './routes/client/reviewRoute'
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
@@ -35,6 +36,7 @@ app.use('/client/product', productRouter)
 app.use('/client/address', addressRouter)
 app.use('/client/cart', cartRouter)
 app.use('/client/wishlist', wishlistRoute)
+app.use('/client/review', reviewRouter)
 
 app.use('/cms/staff', staffRouter_cms)
 app.use('/cms/category', categoryRouter_cms)
