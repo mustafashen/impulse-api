@@ -18,6 +18,7 @@ import rateLimit from 'express-rate-limit'
 import { cartRouter } from './routes/client/cartRoute'
 import { wishlistRoute } from './routes/client/wishlistRoute'
 import { reviewRouter } from './routes/client/reviewRoute'
+import { stripeHooks } from './routes/hooks/stripe'
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
@@ -41,6 +42,8 @@ app.use('/client/review', reviewRouter)
 app.use('/cms/staff', staffRouter_cms)
 app.use('/cms/category', categoryRouter_cms)
 app.use('/cms/product', productRouter_cms)
+
+app.use('/webhooks/stripe', stripeHooks)
 
 export {
   app
