@@ -1,4 +1,6 @@
 import { CartModel } from "../../models/client/cartModel"
+import { ProductModel } from "../../models/client/productModel"
+import { StripeCheckoutLinesType } from "../../types/StripeTypes"
 import { cartCheckout } from "../../utils/payment/stripe/checkout"
 import { validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
 
@@ -14,13 +16,31 @@ const CheckoutController = {
 			const cart_lines = await CartModel.findAllCartLines(cart.cart_id)
 			if (cart_lines.Error) throw cart_lines.Error
 
-			// convert cart_line object into line_item form in stripe api
-			const session = await cartCheckout(cart_lines)
+			const line_items = await Promise.all(
+				cart_lines.map(async (cart_line: CartLineType) => {
+					const product = await ProductModel.findProductById(cart_line.product_id)
+					if(product.Error) throw product.Error
+					const {name, price} = product[0]
+					return {
+						price_data: {
+							currency: "usd",
+							product_data: { 
+								name: name,
+							},
+							unit_amount: price * 100,
+						},
+						quantity: cart_line.quantity
+					}
+				})
+			)
+			
+			//@ts-ignore
+			const session = await cartCheckout(line_items)
 			if (session.Error) throw session.Error
 
 			return session
     } catch (error: any) {
-      console.log(error)
+      console.log('here ye',error)
       return { Error: error }
     }
   },

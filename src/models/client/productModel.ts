@@ -14,6 +14,19 @@ const ProductModel = {
       }
       return {Error: error}
     }
+  },
+  findProductById: async (id: string) => {
+    try {
+      const res = await knex('product').where({id})
+      console.log(res)
+      if (res.length === 0 || res === 0) throw "4004"
+      return res
+    } catch (error: any) {
+      if (error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
   }
 }
 

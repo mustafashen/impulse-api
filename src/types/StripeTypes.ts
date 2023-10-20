@@ -13,8 +13,8 @@ interface StripeCheckoutLinesType {
 interface StripeCheckoutType {
     line_items: StripeCheckoutLinesType,
     mode: 'payment',
-    success_url: `'https://example.com/success'`,
-    cancel_url: 'https://example.com/cancel',
+    success_url: string,
+    cancel_url: string,
 }
 
 export {
