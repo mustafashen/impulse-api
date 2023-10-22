@@ -5,14 +5,6 @@ import { actionOwnerAuth } from "../../middlewares/client/actionOwnerAuth"
 
 const cartRouter = express.Router()
 
-// Cart items read
-// Create cart
-// Add cart item
-// Delete cart item
-// Update Cart items
-
-
-
 cartRouter.post('/list', actionOwnerAuth, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.readCartLines(req.body)
