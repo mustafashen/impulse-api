@@ -17,6 +17,32 @@ productRouter.get('/all', async (req: Request, res: Response) => {
   }
 })
 
+productRouter.post('/category', async (req: Request, res: Response) => {
+  try {
+    const resData = await ProductController.getProductsByCategory(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(200).send(resData)
+  } catch (error: any) {
+    console.log('route',error)
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
+productRouter.post('/id', async (req: Request, res: Response) => {
+  try {
+    const resData = await ProductController.getProductsByCategory(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(200).send(resData)
+  } catch (error: any) {
+    console.log('route',error)
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
 export {
   productRouter
 }
