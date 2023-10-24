@@ -20,6 +20,7 @@ import { wishlistRoute } from './routes/client/wishlistRoute'
 import { reviewRouter } from './routes/client/reviewRoute'
 import { stripeHooks } from './routes/hooks/stripe'
 import { checkoutRouter } from './routes/client/checkoutRoute'
+import bodyParser from 'body-parser'
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
@@ -28,11 +29,20 @@ const limiter = rateLimit({
 })
 
 
+
 const app = express()
-app.use(express.json())
+app.use((req, res, next) => {
+  const baseUrl = req.originalUrl.split('/')[1]
+  console.log(baseUrl)
+  if (`/${baseUrl}` === '/webhooks') {
+    next()
+  } else {
+    bodyParser.json()(req, res, next);
+  }
+})
 app.use(limiter)
 
-app.use('/client/customer', customerRouter)
+app.use('/client/customer', customerRouter) 
 app.use('/client/category', categoryRouter)
 app.use('/client/product', productRouter)
 app.use('/client/address', addressRouter)

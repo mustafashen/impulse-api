@@ -8,7 +8,7 @@ checkoutRouter.post("/cart", async (req: Request, res: Response) => {
   try {
     const resData = await CheckoutController.createCartCheckout(req.body)
     if (resData?.Error) throw resData.Error
-    console.log(resData);
+    // console.log(resData);
     res.status(200).send(resData)
   } catch (error: any) {
     console.log(error)

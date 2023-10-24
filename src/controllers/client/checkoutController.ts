@@ -1,6 +1,5 @@
 import { CartModel } from "../../models/client/cartModel"
 import { ProductModel } from "../../models/client/productModel"
-import { StripeCheckoutLinesType } from "../../types/StripeTypes"
 import { cartCheckout } from "../../utils/payment/stripe/checkout"
 import { validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
 
@@ -40,7 +39,6 @@ const CheckoutController = {
 
 			return session
     } catch (error: any) {
-      console.log('here ye',error)
       return { Error: error }
     }
   },
