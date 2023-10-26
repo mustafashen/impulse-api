@@ -1,7 +1,9 @@
 import { CartModel } from "../../models/client/cartModel"
+import { OrderModel } from "../../models/client/orderModel"
 import { ProductModel } from "../../models/client/productModel"
 import { cartCheckout } from "../../utils/payment/stripe/checkout"
 import { validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
+const { v4: uuidv4 } = require('uuid')
 
 const CheckoutController = {
   createCartCheckout: async (body: {cart: {cart_id: string}}) => {
@@ -19,7 +21,8 @@ const CheckoutController = {
 				cart_lines.map(async (cart_line: CartLineType) => {
 					const product = await ProductModel.findProductById(cart_line.product_id)
 					if(product.Error) throw product.Error
-					const {name, price} = product[0]
+					const {name, price, stock} = product[0]
+					if (stock < cart_line.quantity) throw "5000"
 					return {
 						price_data: {
 							currency: "usd",
@@ -36,8 +39,22 @@ const CheckoutController = {
 			//@ts-ignore
 			const session = await cartCheckout(line_items)
 			if (session.Error) throw session.Error
+			
+			const foundCart = await CartModel.findCart(cart.cart_id)
+			if (foundCart.Error) throw foundCart.Error
+			const targetCart = foundCart[0]
+			
+			const order = await OrderModel.createOrder({
+				id: uuidv4(),
+				customer_id: targetCart.customer_id,
+				cart_id: targetCart.id,
+				status: "pending",
+				total_amount: session.amount_total,
+				checkout_id: session.id
+			})
+			if (order.Error) throw order.Error
 
-			return session
+			return session.url
     } catch (error: any) {
       return { Error: error }
     }

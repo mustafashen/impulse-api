@@ -33,7 +33,6 @@ const limiter = rateLimit({
 const app = express()
 app.use((req, res, next) => {
   const baseUrl = req.originalUrl.split('/')[1]
-  console.log(baseUrl)
   if (`/${baseUrl}` === '/webhooks') {
     next()
   } else {
