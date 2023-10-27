@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { AddressController } from "../../controllers/client/addressController"
-import { authenticateCustomer } from "../../middlewares/client/customerAuth"
+import { actionOwnerAuth } from "../../middlewares/client/actionOwnerAuth"
 
 const addressRouter = express.Router()
 
-addressRouter.post('/create', authenticateCustomer, async (req: Request, res: Response) => {
+addressRouter.post('/create', actionOwnerAuth, async (req: Request, res: Response) => {
   try {
     const resData = await AddressController.postCreateAddress(req.body)
     if (resData?.Error) throw resData.Error

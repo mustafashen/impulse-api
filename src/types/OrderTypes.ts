@@ -4,5 +4,6 @@ interface CreateOrderType {
     cart_id: string,
     customer_id: string,
     checkout_id: string,
-    total_amount: number
+    total_amount: number,
+    address_id: string
 }

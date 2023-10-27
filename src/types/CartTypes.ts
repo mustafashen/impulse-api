@@ -24,3 +24,12 @@ interface CartType {
   location?: string,
 }
 
+interface CartUpdateType {
+  id: string,
+  updates: {
+    location?: string,
+    address_id?: string,
+    order_placed: boolean
+  }
+}
+

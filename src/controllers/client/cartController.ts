@@ -1,5 +1,5 @@
 import { CartModel } from "../../models/client/cartModel"
-import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLinesReadParams, validateCustomerCartFindParams } from "../../utils/validation/client/cartValidation"
+import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLinesReadParams, validateCartUpdateParams, validateCustomerCartFindParams } from "../../utils/validation/client/cartValidation"
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -67,6 +67,29 @@ const CartController = {
           return customerCart
         }
       } else throw "5000"
+
+    } catch (error: any) {
+      console.log(error)
+      return {Error: error}
+    }
+  },
+
+  updateCart: async (body: {cart: CartUpdateType, id?: string, token?: string, guest?: boolean}) => {
+    try {
+        const cartUpdateSchema = body.cart.updates
+        
+        const valid = validateCartUpdateParams(cartUpdateSchema)
+        if (!valid) throw "4000"
+        
+        if (body.id) {
+          const customerCart = await CartModel.findCustomerCart(body.id)
+          if (customerCart.noCartFound) throw "4000"
+          else if (customerCart[0].customer_id !== body.id) throw "4003"
+        }
+
+        const resData = await CartModel.updateCart(body.cart)
+        if (resData.Error) throw resData.Error
+        return resData
 
     } catch (error: any) {
       console.log(error)

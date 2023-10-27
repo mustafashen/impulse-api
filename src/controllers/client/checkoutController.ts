@@ -3,6 +3,7 @@ import { OrderModel } from "../../models/client/orderModel"
 import { ProductModel } from "../../models/client/productModel"
 import { cartCheckout } from "../../utils/payment/stripe/checkout"
 import { validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
+import { validateCreateCheckoutParams } from "../../utils/validation/client/checkoutValidation"
 const { v4: uuidv4 } = require('uuid')
 
 const CheckoutController = {
@@ -44,16 +45,21 @@ const CheckoutController = {
 			if (foundCart.Error) throw foundCart.Error
 			const targetCart = foundCart[0]
 			
-			const order = await OrderModel.createOrder({
+			const newCheckout: CreateOrderType = {
 				id: uuidv4(),
 				customer_id: targetCart.customer_id,
 				cart_id: targetCart.id,
 				status: "pending",
+				address_id: targetCart.address_id,
 				total_amount: session.amount_total,
-				checkout_id: session.id
-			})
-			if (order.Error) throw order.Error
+				checkout_id: session.id,
+			}
 
+			const checkoutValid =  validateCreateCheckoutParams(newCheckout)
+			if (!checkoutValid) throw "4022"
+
+			const order = await OrderModel.createOrder(newCheckout)
+			if (order.Error) throw order.Error
 			return session.url
     } catch (error: any) {
       return { Error: error }
