@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 
 const WishlistController = {
 
-  readWishlistLines: async (body: {wishlist: {id: string}, guest?: boolean, id: string}) => {
+  readWishlistLines: async (body: {wishlist: {id: string}, id: string}) => {
     try {
       const {wishlist} = body
       if (!wishlist) throw "4000"
@@ -15,51 +15,34 @@ const WishlistController = {
       const foundWishlist = await WishlistModel.readWishlistLines(wishlist.id)
       if (foundWishlist?.Error) throw foundWishlist.Error
 
-      if (body.guest) {
-        const wishlistLines = await WishlistModel.readWishlistLines(wishlist.id)
-        if (wishlistLines?.Error) throw wishlistLines.Error
-        return wishlistLines
-      } else {
-        const wishlistCustomerId = foundWishlist.customer_id
-        if (!wishlistCustomerId || wishlistCustomerId !== body.id) throw "4001"
-        
-        const wishlistLines = await WishlistModel.readWishlistLines(wishlist.id)
-        if (wishlistLines.Error) throw wishlistLines.Error
-      }
+      const wishlistCustomerId = foundWishlist[0].customer_id
+      if (!wishlistCustomerId || wishlistCustomerId !== body.id) throw "4001"
+      
+      const wishlistLines = await WishlistModel.readWishlistLines(wishlist.id)
+      if (wishlistLines.Error) throw wishlistLines.Error
+
     } catch (error: any) {
       return {Error: error}
     }
   },
 
-  createWishlist: async (body: {wishlist: {}, id: string, token?: string, guest?: boolean}) => {
+  createWishlist: async (body: {wishlist: {}, id: string, token?: string}) => {
     try {
-      if (body.guest) {
+      const customerWishlist = await WishlistModel.findCustomerWishlist(body.id)
+      if (customerWishlist.noWishlistFound) {
         const wishlistSchema = {
           id: uuidv4(),
+          customer_id: body.id,
         }
         const valid = validateWishlistCreateParams(wishlistSchema)
         if (!valid) throw "4022"
 
         const resData = await WishlistModel.createWishlist(wishlistSchema)
-        if (resData.Error) throw resData.Error
+        if (resData?.Error) throw resData.Error
         return resData
-      } else if (!body.guest) {
-        const customerWishlist = await WishlistModel.findCustomerWishlist(body.id)
-        if (customerWishlist.noWishlistFound) {
-          const wishlistSchema = {
-            id: uuidv4(),
-            customer_id: body.id,
-          }
-          const valid = validateWishlistCreateParams(wishlistSchema)
-          if (!valid) throw "4022"
-
-          const resData = await WishlistModel.createWishlist(wishlistSchema)
-          if (resData?.Error) throw resData.Error
-          return resData
-        } else {
-          return customerWishlist
-        } 
-      } else throw "5000"
+      } else {
+        return customerWishlist
+      } 
     } catch (error: any) {
       return {Error: error}
     }

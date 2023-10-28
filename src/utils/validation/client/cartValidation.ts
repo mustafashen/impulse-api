@@ -27,8 +27,7 @@ const CartUpdateSchema = {
 const CustomerCartFindSchema = {
   type: "object",
   properties: {
-    id: {type: "string", format: "uuid"},
-    guest: {type: "boolean"}
+    id: {type: "string", format: "uuid"}
   },
   required: ['id']
 }

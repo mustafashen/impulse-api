@@ -1,7 +1,7 @@
 
 interface WishlistType {
   id: string,
-  customer_id?: string,
+  customer_id: string,
 }
 
 interface WishlistLineType {

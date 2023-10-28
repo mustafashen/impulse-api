@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid')
 
 
 const CartController = {
-  readCartLines: async (body: {cart: {cart_id: string}, guest: boolean, id: string}) => {
+  readCartLines: async (body: {cart: {cart_id: string}, id: string}) => {
     try {
       const {cart_id} = body.cart
       if (!cart_id) throw "4000"
@@ -15,18 +15,11 @@ const CartController = {
       const foundCart = await CartModel.findCart(cart_id)
       if (foundCart.Error) throw foundCart.Error
 
-      if (body.guest) {
-        const cartLines = await CartModel.findAllCartLines(cart_id)
-        if (cartLines.Error) throw cartLines.Error
-        return cartLines
-
-      } else {
-        const cartCustomerId = foundCart.customer_id
-        if (!cartCustomerId || cartCustomerId !== body.id) throw "4001"
-        
-        const cartLines = await CartModel.findAllCartLines(cart_id)
-        if (cartLines.Error) throw cartLines.Error
-      }
+      const cartCustomerId = foundCart.customer_id
+      if (!cartCustomerId || cartCustomerId !== body.id) throw "4001"
+      
+      const cartLines = await CartModel.findAllCartLines(cart_id)
+      if (cartLines.Error) throw cartLines.Error
 
     } catch (error) {
       console.log(error)
@@ -34,39 +27,26 @@ const CartController = {
     }
   },
 
-  createCart: async (body: {cart: {location?: string}, id?: string, token?: string, guest?: boolean}) => {
+  createCart: async (body: {cart: {location?: string}, id: string, token?: string}) => {
     try {
-      if (body.guest) {
+      
+      const customerCart = await CartModel.findCustomerCart(body.id)
+      if (customerCart.noCartFound) {
         const cartSchema = {
           id: uuidv4(),
+          customer_id: body.id,
           location: body.cart.location
         }
         const valid = validateCartCreateParams(cartSchema)
         if (!valid) throw "4000"
-        
+
         const resData = await CartModel.createCart(cartSchema)
         if (resData.Error) throw resData.Error
-        return resData
-
-      } else if (body.id) {
-        const customerCart = await CartModel.findCustomerCart(body.id)
-        if (customerCart.noCartFound) {
-          const cartSchema = {
-            id: uuidv4(),
-            customer_id: body.id,
-            location: body.cart.location
-          }
-          const valid = validateCartCreateParams(cartSchema)
-          if (!valid) throw "4000"
-
-          const resData = await CartModel.createCart(cartSchema)
-          if (resData.Error) throw resData.Error
-          return resData
-        
-        } else {
-          return customerCart
-        }
-      } else throw "5000"
+        return {cart_id: cartSchema.id}
+      
+      } else {
+        return customerCart
+      }
 
     } catch (error: any) {
       console.log(error)
@@ -74,18 +54,16 @@ const CartController = {
     }
   },
 
-  updateCart: async (body: {cart: CartUpdateType, id?: string, token?: string, guest?: boolean}) => {
+  updateCart: async (body: {cart: CartUpdateType, id: string, token?: string}) => {
     try {
         const cartUpdateSchema = body.cart.updates
         
         const valid = validateCartUpdateParams(cartUpdateSchema)
         if (!valid) throw "4000"
         
-        if (body.id) {
-          const customerCart = await CartModel.findCustomerCart(body.id)
-          if (customerCart.noCartFound) throw "4000"
-          else if (customerCart[0].customer_id !== body.id) throw "4003"
-        }
+        const customerCart = await CartModel.findCustomerCart(body.id)
+        if (customerCart.noCartFound) throw "4000"
+        else if (customerCart[0].customer_id !== body.id) throw "4003"
 
         const resData = await CartModel.updateCart(body.cart)
         if (resData.Error) throw resData.Error
@@ -100,7 +78,7 @@ const CartController = {
   createCartLine: async (body: {id?: string, location?: string, cart_line: CartLineType}) => {
     try {
      const {cart_line} = body
-     if (!cart_line || cart_line.cart_id) throw "4000"
+     if (!cart_line) throw "4000"
 
     // search for the cart
     // If not found throw 4004
@@ -161,7 +139,7 @@ const CartController = {
 
       const foundCart = await CartModel.findCart(cart_line.cart_id)
       if (foundCart.Error) throw foundCart.Error
-      else if (body.id !== foundCart.customer_id)
+      else if (body.id !== foundCart[0].customer_id)
         throw "4003"
       
       const resData = await CartModel.deleteCartLine(cart_line.id)
@@ -183,8 +161,8 @@ const CartController = {
       console.log(body)
       const foundCart = await CartModel.findCart(cart_line.cart_id)
       if (foundCart.Error) throw foundCart.Error
-      else if (body.guest !== true && body.id !== foundCart.customer_id)
-        throw "4003"
+      else if (body.id !== foundCart[0].customer_id)
+        throw "4001"
      
       const resData = await CartModel.updateCartLine(cart_line)
       if (resData.Error) throw resData.Error
@@ -195,7 +173,7 @@ const CartController = {
     }
   },
 
-  findCustomerCart: async (body: {id: string, guest?: boolean}) => {
+  findCustomerCart: async (body: {id: string}) => {
     try {
       const {id} = body
       if (!id) throw "4000"

@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
-import { actionOwnerAuth } from "../../middlewares/client/actionOwnerAuth"
 import { WishlistController } from "../../controllers/client/wishlistController"
+import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 
 const wishlistRoute = express.Router()
 
-wishlistRoute.get('/list', actionOwnerAuth, async (req: Request, res: Response) => {
+wishlistRoute.get('/list', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await WishlistController.readWishlistLines(req.body)
     if (resData?.Error) throw resData.Error
@@ -17,7 +17,7 @@ wishlistRoute.get('/list', actionOwnerAuth, async (req: Request, res: Response) 
   }  
 })
 
-wishlistRoute.post('/create', actionOwnerAuth, async (req: Request, res: Response) => {
+wishlistRoute.post('/create', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await WishlistController.createWishlist(req.body)
     if (resData?.Error) throw resData.Error
@@ -29,7 +29,7 @@ wishlistRoute.post('/create', actionOwnerAuth, async (req: Request, res: Respons
   }
 })
 
-wishlistRoute.post('/line-toggle', actionOwnerAuth, async (req: Request, res: Response) => {
+wishlistRoute.post('/line-toggle', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await WishlistController.toggleWishlistLine(req.body)
     if (resData?.Error) throw resData.Error

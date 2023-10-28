@@ -1,11 +1,11 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { CartController } from "../../controllers/client/cartController"
-import { actionOwnerAuth } from "../../middlewares/client/actionOwnerAuth"
+import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 
 const cartRouter = express.Router()
 
-cartRouter.post('/list', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/list', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.readCartLines(req.body)
     if (resData?.Error) throw resData.Error
@@ -18,7 +18,7 @@ cartRouter.post('/list', actionOwnerAuth, async (req: Request, res: Response) =>
   }
 })
 
-cartRouter.post('/create', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/create', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.createCart(req.body)
     if (resData?.Error) throw resData.Error
@@ -30,7 +30,7 @@ cartRouter.post('/create', actionOwnerAuth, async (req: Request, res: Response) 
   }
 })
 
-cartRouter.post('/update', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/update', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.updateCart(req.body)
     if (resData?.Error) throw resData.Error
@@ -42,7 +42,7 @@ cartRouter.post('/update', actionOwnerAuth, async (req: Request, res: Response) 
   }
 })
 
-cartRouter.post('/line-create', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.post('/line-create', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.createCartLine(req.body)
     if (resData?.Error) throw resData.Error
@@ -54,7 +54,7 @@ cartRouter.post('/line-create', actionOwnerAuth, async (req: Request, res: Respo
   }
 })
 
-cartRouter.delete('/line-delete', actionOwnerAuth, async (req: Request, res: Response) =>{
+cartRouter.delete('/line-delete', authenticateCustomer, async (req: Request, res: Response) =>{
   try {
     const resData = await CartController.deleteCartLine(req.body)
     if (resData?.Error) throw resData.Error
@@ -66,7 +66,7 @@ cartRouter.delete('/line-delete', actionOwnerAuth, async (req: Request, res: Res
   }
 })
 
-cartRouter.put('/line-update', actionOwnerAuth, async (req: Request, res: Response) =>{
+cartRouter.put('/line-update', authenticateCustomer, async (req: Request, res: Response) =>{
   try {
     const resData = await CartController.updateCartLine(req.body)
     if (resData?.Error) throw resData.Error
@@ -78,7 +78,7 @@ cartRouter.put('/line-update', actionOwnerAuth, async (req: Request, res: Respon
   }
 })
 
-cartRouter.get('/find-customer-cart', actionOwnerAuth, async (req: Request, res: Response) => {
+cartRouter.get('/find-customer-cart', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.findCustomerCart(req.body)
     if (resData?.Error) throw resData.Error
