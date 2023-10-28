@@ -60,7 +60,7 @@ const CheckoutController = {
 
 			const order = await OrderModel.createOrder(newCheckout)
 			if (order.Error) throw order.Error
-			return session.url
+			return {checkout_url: session.url}
     } catch (error: any) {
       return { Error: error }
     }

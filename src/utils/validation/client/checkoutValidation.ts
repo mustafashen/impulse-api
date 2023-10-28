@@ -16,6 +16,7 @@ const CreateCheckoutSchema = {
     total_amount: {type: "number"},
     checkout_id: {type: "string"}
   },
+  required: ["id", "customer_id", "cart_id", "status", "address_id", "total_amount", "checkout_id"],
 }
 
 

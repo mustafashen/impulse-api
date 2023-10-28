@@ -30,7 +30,7 @@ cartRouter.post('/create', authenticateCustomer, async (req: Request, res: Respo
   }
 })
 
-cartRouter.post('/update', authenticateCustomer, async (req: Request, res: Response) => {
+cartRouter.put('/update', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.updateCart(req.body)
     if (resData?.Error) throw resData.Error
