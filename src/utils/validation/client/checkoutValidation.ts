@@ -12,11 +12,11 @@ const CreateCheckoutSchema = {
     customer_id: {type: "string", format: "uuid"},
     cart_id: {type: "string", format: "uuid"},
     status: {type: "string"},
-    address_id: {type: "string"},
+    shipment_id: {type: "string"},
     total_amount: {type: "number"},
     checkout_id: {type: "string"}
   },
-  required: ["id", "customer_id", "cart_id", "status", "address_id", "total_amount", "checkout_id"],
+  required: ["id", "customer_id", "cart_id", "status", "shipment_id", "total_amount", "checkout_id"],
 }
 
 

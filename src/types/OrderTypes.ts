@@ -5,5 +5,5 @@ interface CreateOrderType {
     customer_id: string,
     checkout_id: string,
     total_amount: number,
-    address_id: string
+    shipment_id: string
 }

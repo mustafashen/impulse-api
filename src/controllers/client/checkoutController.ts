@@ -1,9 +1,11 @@
 import { CartModel } from "../../models/client/cartModel"
 import { OrderModel } from "../../models/client/orderModel"
 import { ProductModel } from "../../models/client/productModel"
+import { ShipmentModel } from "../../models/cms/shipmentModel"
 import { cartCheckout } from "../../utils/payment/stripe/checkout"
 import { validateCartLinesReadParams } from "../../utils/validation/client/cartValidation"
 import { validateCreateCheckoutParams } from "../../utils/validation/client/checkoutValidation"
+import { validateCreateShipmentParams } from "../../utils/validation/client/shipmentValidation"
 const { v4: uuidv4 } = require('uuid')
 
 const CheckoutController = {
@@ -44,23 +46,38 @@ const CheckoutController = {
 			const foundCart = await CartModel.findCart(cart.cart_id)
 			if (foundCart.Error) throw foundCart.Error
 			const targetCart = foundCart[0]
+
+			// Create a shipment object
+			const newShipment: CreateShipmentType = {
+				id: uuidv4(),
+				address_id: targetCart.address_id,
+			}
+			const shipmentValid = validateCreateShipmentParams(newShipment)
+			if (!shipmentValid) throw "4022"
 			
+			const shipment = await ShipmentModel.createShipment(newShipment)
+			if (shipment.Error) throw shipment.Error
+			
+			// Create an order object
 			const newCheckout: CreateOrderType = {
 				id: uuidv4(),
 				customer_id: targetCart.customer_id,
 				cart_id: targetCart.id,
 				status: "pending",
-				address_id: targetCart.address_id,
 				total_amount: session.amount_total,
 				checkout_id: session.id,
+				shipment_id: newShipment.id
 			}
-
-			const checkoutValid =  validateCreateCheckoutParams(newCheckout)
+			
+			console.log(newCheckout)
+			const checkoutValid = validateCreateCheckoutParams(newCheckout)
 			if (!checkoutValid) throw "4022"
 
 			const order = await OrderModel.createOrder(newCheckout)
 			if (order.Error) throw order.Error
+			
 			return {checkout_url: session.url}
+
     } catch (error: any) {
       return { Error: error }
     }
