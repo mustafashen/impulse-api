@@ -6,6 +6,7 @@ const config = ((env: any) => {
 })(process.env.NODE_ENV)
 
 require('dotenv').config({ path: config })
+const fileUpload = require('express-fileupload')
 import express from 'express'
 import {customerRouter} from './routes/client/customerRoute'
 import {categoryRouter} from './routes/client/categoryRoute'
@@ -37,9 +38,14 @@ app.use((req, res, next) => {
   if (`/${baseUrl}` === '/webhooks') {
     next()
   } else {
-    bodyParser.json()(req, res, next);
+    bodyParser.json()(req, res, next)
   }
 })
+app.use(fileUpload({
+  limits: {
+    fileSize: 1024 * 1024
+  }
+}))
 app.use(limiter)
 
 app.use('/client/customer', customerRouter) 
