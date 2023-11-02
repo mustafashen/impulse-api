@@ -39,9 +39,9 @@ productRouter_cms.put('/update', authenticateStaff, async (req: Request, res: Re
   }
 })
 
-productRouter_cms.post('/upload-image', authenticateStaff, async (req: any, res: Response) => {
+productRouter_cms.post('/upload-image', async (req: any, res: Response) => {
   try {
-    const resData = await storeProductImage(req.files, req.body)
+    const resData = await storeProductImage(req.files, {product: {id: req.body.product_id}})
     if (resData.Error) throw resData.Error
     res.status(201).send(resData)
   } catch (error: any) {
