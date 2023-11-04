@@ -1,14 +1,15 @@
 import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { authenticateAdmin } from "../../middlewares/cms/adminAuth_cms"
+import { initModel_cms } from "../../models/cms/initModel_cms"
 
-const initModel_cms = express.Router()
+const initRoute_cms = express.Router()
 
-initModel_cms.post('/init-model', authenticateAdmin, async (req: Request, res: Response) => {
+initRoute_cms.post('/init-model', authenticateAdmin, async (req: Request, res: Response) => {
   try {
-    // const resData = await ProductController_cms.createProductController(req.body)
-    // if (resData.Error) throw resData.Error
-    // res.status(201).send(resData)
+    const resData = await initModel_cms.initModel()
+    if (resData.Error) throw resData.Error
+    res.status(201).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)
@@ -16,5 +17,5 @@ initModel_cms.post('/init-model', authenticateAdmin, async (req: Request, res: R
 })
 
 export {
-  initModel_cms
+  initRoute_cms
 }

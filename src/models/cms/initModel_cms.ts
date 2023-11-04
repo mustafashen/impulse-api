@@ -160,10 +160,15 @@ const initModel_cms = {
         t.foreign('product_id').references('id').inTable('product')
       })
 
+      return {Success: true}
     } catch (error: any) {
-      console.log('createProductModel', error)
+      console.log('createInitModel', error)
       if(error.code) return {Error: error.code}
       return {Error: error}
     }
   }
+}
+
+export {
+  initModel_cms
 }
