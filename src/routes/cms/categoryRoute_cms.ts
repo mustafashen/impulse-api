@@ -2,7 +2,6 @@ import express, {Request, Response} from "express"
 import { errorMessages } from "../../utils/responseMessages/errorsMessages"
 import { authenticateStaff } from "../../middlewares/cms/staffAuth_cms"
 import { CategoryController } from "../../controllers/cms/categoryController_cms"
-import { readSync } from "fs"
 
 const categoryRouter_cms = express.Router()
 
