@@ -70,7 +70,8 @@ customerRouter.put("/update", authenticateCustomer, async (req: Request, res: Re
 
 customerRouter.get("/activate", async (req: Request, res: Response) =>{
   try {
-    const resData = await CustomerController.activateCustomer(req.params.token)
+    //@ts-ignore
+    const resData = await CustomerController.activateCustomer(req.query.token)
     if (resData?.Error) throw resData.Error
     res.send(resData)
   } catch (error: any) {

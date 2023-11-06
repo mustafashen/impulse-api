@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 import { CustomerType, CustomerUpdateType } from "../../types/CustomerTypes"
 import { generateAuthToken } from "../../utils/auth/generateAuthToken"
+import { sendActivationMail } from "../../utils/confirmation/sendConfirmationMail"
 import {
   validateCustomerLoginParams,
   validateCustomerLogoutParams,
@@ -19,15 +20,21 @@ const CustomerController = {
       customer.id = uuidv4()
       const valid = validateCustomerSignupParams(customer)
       if (!valid) throw "4022"
-      
+
       customer.is_active = false
       customer.password = await bcrypt.hash(customer.password, 10)
       const resData = await CustomerModel.createCustomer(customer)
       if (resData?.Error) throw resData.Error
+
+      const activationToken = await generateAuthToken(customer.id)
+      const emailSendRes = await sendActivationMail({name: customer.name, to: customer.email, token: activationToken})
+      if (emailSendRes?.Error) throw emailSendRes.Error
+
       return resData
+
     } catch (error) {
       console.log(error)
-      return {Error: error}
+      return {Error: error} 
     }
   },
 

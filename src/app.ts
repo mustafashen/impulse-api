@@ -23,7 +23,7 @@ import { stripeHooks } from './routes/hooks/stripe'
 import { checkoutRouter } from './routes/client/checkoutRoute'
 import bodyParser from 'body-parser'
 import { shipmentRouter_cms } from './routes/cms/shipmentRoute.cms'
-import { initRouter_cms } from './routes/cms/init_cms'
+import { initRouter_cms } from './routes/cms/initRouter_cms'
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
