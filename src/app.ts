@@ -23,7 +23,7 @@ import { stripeHooks } from './routes/hooks/stripe'
 import { checkoutRouter } from './routes/client/checkoutRoute'
 import bodyParser from 'body-parser'
 import { shipmentRouter_cms } from './routes/cms/shipmentRoute.cms'
-import { initRoute_cms } from './routes/cms/initRoute_cms'
+import { initRouter_cms } from './routes/cms/init_cms'
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour in milliseconds
@@ -58,7 +58,7 @@ app.use('/client/wishlist', wishlistRoute)
 app.use('/client/review', reviewRouter)
 app.use('/client/checkout', checkoutRouter)
 
-app.use('/cms/init', initRoute_cms)
+app.use('/cms/init', initRouter_cms)
 app.use('/cms/staff', staffRouter_cms)
 app.use('/cms/category', categoryRouter_cms)
 app.use('/cms/product', productRouter_cms)

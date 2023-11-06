@@ -27,7 +27,6 @@ async function authenticateStaff(req: Request, res: Response, next: NextFunction
       next()
     }
   } catch (error: any) {
-    console.log(error)
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send({Error: message})
   }

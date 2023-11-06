@@ -12,7 +12,6 @@ shipmentRouter_cms.put('/add', authenticateStaff, async (req: Request, res: Resp
     res.status(201).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
-    console.log('error')
     res.status(httpCode).send({Error: message})
   }
 })
