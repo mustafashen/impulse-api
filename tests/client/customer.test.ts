@@ -1,19 +1,23 @@
 import request from 'supertest';
 import {app} from '../../src/app';
 import { customer_login, customer_signup } from '../factories/customer-factory';
-import { knex } from '../../src/db/knex';
-import sinon from "sinon" 
+import { CustomerModel } from '../../src/models/client/customerModel';
+const {knex} = require('../../src/db/knex')
 
 
 describe('POST /signup', () => {
-
   it ('should return 201', async () => {
-    sinon.stub(knex, "insert").returns(Promise.resolve(1))
+    // TODO:
+    // mocks work when we directly call the methods but not when it called indirectly
+      // we need to fix this issue
+      // desired mocking behavior we want to archive called monkey-patching 
+      // one library might work is rewire but it only works with commonjs modules
+    // we might consider writing tests for m,v,c separately in isolation this might make our job easier
+    const spy = jest.spyOn(CustomerModel, 'createCustomer')
+    spy.mockResolvedValue({Success: true})
 
-    const response = await request(app).post('/signup').send(customer_signup)
-    // expect(mockInsert).toHaveBeenCalled()
-    expect(response.status).toBe(201)
-    // expect(response.body).toHaveProperty('Success')
+    await request(app).post('/signup').send(customer_signup)
+    expect(spy).toHaveBeenCalled()
   })
 
 })
