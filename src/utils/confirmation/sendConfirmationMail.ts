@@ -26,6 +26,7 @@ async function sendActivationMail({name, to, token}: {name: string, to: string, 
         </body>
       </html>`,
     })
+    return {Sent: true}
   } catch (error: any) {
     return {Error: error}
   }

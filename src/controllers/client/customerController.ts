@@ -54,6 +54,7 @@ const CustomerController = {
       CustomerModel.addNewAuthToken({customerId: searchResult[0].id, token, id: uuidv4()})
       return {token}
     } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   },

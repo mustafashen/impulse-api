@@ -39,10 +39,9 @@ const CustomerModel = {
 
   addNewAuthToken: async (newToken: {id: string, customerId: string, token: string}) => {
     try {
-      console.log(newToken)
       const {id, customerId, token} = newToken
       const res = await knex('customer_token').insert({id, token, customer_id: customerId})
-      console.log(res)
+
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 

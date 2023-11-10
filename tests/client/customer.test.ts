@@ -1,35 +1,52 @@
 import request from 'supertest';
 import {app} from '../../src/app';
 import { customer_login, customer_signup } from '../factories/customer-factory';
-import { CustomerModel } from '../../src/models/client/customerModel';
-const {knex} = require('../../src/db/knex')
+import { transporter } from '../../src/services/nodemailTransporter';
+import { knex } from '../../src/db/knex';
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
+jest.mock('../../src/db/knex')
 
 describe('POST /signup', () => {
   it ('should return 201', async () => {
-    // TODO:
-    // mocks work when we directly call the methods but not when it called indirectly
-      // we need to fix this issue
-      // desired mocking behavior we want to archive called monkey-patching 
-      // one library might work is rewire but it only works with commonjs modules
-    // we might consider writing tests for m,v,c separately in isolation this might make our job easier
-    const spy = jest.spyOn(CustomerModel, 'createCustomer')
-    spy.mockResolvedValue({Success: true})
 
-    await request(app).post('/signup').send(customer_signup)
-    expect(spy).toHaveBeenCalled()
+    knex.mockReturnValue({insert: jest.fn().mockReturnValue(1)})
+
+    const bcryptSpy = jest.spyOn(bcrypt, 'hash')
+    bcryptSpy.mockResolvedValue('mockHashedSecret')
+
+    const transporterSpy = jest.spyOn(transporter, 'sendMail')
+    transporterSpy.mockResolvedValue({MockSent: true})
+
+    const res = await request(app).post('/client/customer/signup').send(customer_signup)
+    expect(res.status).toBe(201)
+
   })
 
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
 })
 
-// Needs signup route to create the factory user
-// describe('POST /login', async () => {
-//   it ('should return 200', async () => {
-//     const response = await request(app).post('/login').send(customer_login)
-//     expect(response.status).toBe(200)
-//     expect(response.body).toHaveProperty('token')
-//   })
-// })
+describe('POST /login', () => {
+  it ('should return 201', async () => {
 
-// rest of to customer routes depends on signup and login routes
+    knex.mockReturnValue({
+      select: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnValue([{
+        email: customer_login.customer.email,
+        password: 'mockHashedSecret'
+      }]),
+      insert: jest.fn().mockReturnValue(1)
+    })
+    
+    const bcryptSpy = jest.spyOn(bcrypt, 'compare')
+    bcryptSpy.mockReturnValue(true)
+
+    const response = await request(app).post('/client/customer/login').send(customer_login)
+    expect(response.status).toBe(201)
+  })
+})
+
 
