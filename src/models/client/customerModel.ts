@@ -70,7 +70,7 @@ const CustomerModel = {
 
   deleteCustomer: async (customerId: string) => {
     try {
-      const res = await knex('customer').where({id: customerId}).del()
+      const res = await knex('customer').delete().where({id: customerId})
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
@@ -85,7 +85,7 @@ const CustomerModel = {
   updateCustomer: async (body: {customer: CustomerUpdateType, id: string}) => {
     const {customer} = body
     try {
-      const res = await knex('customer').where({id: body.id}).update({...customer.updates})
+      const res = await knex('customer').update({...customer.updates}).where({id: body.id})
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
@@ -99,7 +99,7 @@ const CustomerModel = {
 
   activateCustomer: async (id: string) => {
     try {
-      const res = await knex('customer').where({id}).update({is_active: true})
+      const res = await knex('customer').update({is_active: true}).where({id})
       if (res.length === 0 || res === 0) throw "4004" 
       return {Success: true}
 
