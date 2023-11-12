@@ -28,7 +28,7 @@ interface CartUpdateType {
   updates: {
     location?: string,
     address_id?: string,
-    order_placed: boolean
+    order_placed?: boolean
   }
 }
 

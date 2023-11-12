@@ -59,7 +59,7 @@ cartRouter.delete('/line-delete', authenticateCustomer, async (req: Request, res
     const resData = await CartController.deleteCartLine(req.body)
     if (resData?.Error) throw resData.Error
     console.log(resData)
-    res.status(204).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)

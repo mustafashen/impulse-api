@@ -15,12 +15,13 @@ const CartController = {
       const foundCart = await CartModel.findCart(cart_id)
       if (foundCart.Error) throw foundCart.Error
 
-      const cartCustomerId = foundCart.customer_id
+      const cartCustomerId = foundCart[0].customer_id
       if (!cartCustomerId || cartCustomerId !== body.id) throw "4001"
       
       const cartLines = await CartModel.findAllCartLines(cart_id)
       if (cartLines.Error) throw cartLines.Error
 
+      return cartLines
     } catch (error) {
       console.log(error)
       return {Error: error}
@@ -59,10 +60,10 @@ const CartController = {
         const cartUpdateSchema = body.cart.updates
         
         const valid = validateCartUpdateParams(cartUpdateSchema)
-        if (!valid) throw "4000"
+        if (!valid) throw "4022"
         
         const customerCart = await CartModel.findCustomerCart(body.id)
-        if (customerCart.noCartFound) throw "4000"
+        if (customerCart.noCartFound) throw "4004"
         else if (customerCart[0].customer_id !== body.id) throw "4003"
 
         const resData = await CartModel.updateCart(body.cart)
@@ -129,7 +130,7 @@ const CartController = {
       return {Error: error}
     }
   },
-  deleteCartLine: async (body: {id?: string, cart_line: {id: string, cart_id: string}}) => {
+  deleteCartLine: async (body: {id: string, cart_line: {id: string, cart_id: string}}) => {
     try {
       const {cart_line} = body
       if (!cart_line) throw "4000"

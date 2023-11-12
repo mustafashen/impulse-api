@@ -57,7 +57,7 @@ const CartModel = {
 
   updateCart: async (cart: CartUpdateType) => {
     try {
-      const res = await knex('cart').where({id: cart.id}).update(cart.updates)
+      const res = await knex('cart').update(cart.updates).where({id: cart.id})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
     } catch (error: any) {
@@ -83,7 +83,7 @@ const CartModel = {
 
   deleteCartLine: async (cart_line_id: string) => {
     try {
-      const res = await knex('cart_line').where({id: cart_line_id}).delete()
+      const res = await knex('cart_line').delete().where({id: cart_line_id})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
     } catch (error: any) {
@@ -96,7 +96,7 @@ const CartModel = {
   
   updateCartLine: async (cart_line: {id: string, updates: {quantity: number}}) => {
       try {
-        const res = await knex('cart_line').where({id: cart_line.id}).update(cart_line.updates)
+        const res = await knex('cart_line').update(cart_line.updates).where({id: cart_line.id})
         if (res.length === 0 || res === 0) throw "4004"
         return {Success: true}
       } catch (error: any) {
