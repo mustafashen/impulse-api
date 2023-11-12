@@ -3,7 +3,6 @@ import {app} from '../../src/app';
 import { customer_delete, customer_login, customer_logout, customer_signup, customer_update } from '../factories/customer-factory';
 import { transporter } from '../../src/services/nodemailTransporter';
 import { knex } from '../../src/db/knex';
-import { NextFunction } from 'express';
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -52,6 +51,10 @@ describe('POST /client/customer/login', () => {
     expect(response.status).toBe(201)
     expect(response.body).toEqual({token: 'mockJWT'})
   })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
 })
 
 describe('DELETE /client/customer/logout', () => {
@@ -75,6 +78,10 @@ describe('DELETE /client/customer/logout', () => {
       .set('Authorization', `Bearer mockAccessToken`)
     expect(response.status).toBe(200)
     expect(response.body).toEqual({Success: true})
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks()
   })
 })
 
@@ -104,6 +111,10 @@ describe('DELETE /client/customer/delete', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual({Success: true})
   })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
 })
 
 describe('PUT /client/customer/update', () => {
@@ -132,6 +143,10 @@ describe('PUT /client/customer/update', () => {
     expect(response.status).toBe(200)
     expect(response.body).toEqual({Success: true})
   })
+
+  afterAll(() => {
+    jest.clearAllMocks()
+  })
 })
 
 describe('PUT /client/customer/activate', () => {
@@ -153,5 +168,9 @@ describe('PUT /client/customer/activate', () => {
       .get('/client/customer/activate/?token="mockAccessToken"')
     expect(response.status).toBe(200)
     expect(response.body).toEqual({Success: true})
+  })
+
+  afterAll(() => {
+    jest.clearAllMocks()
   })
 })

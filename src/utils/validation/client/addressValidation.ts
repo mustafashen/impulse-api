@@ -4,7 +4,7 @@ import addFormats from "ajv-formats"
 
 const ajv = new Ajv()
 addFormats(ajv)
-ajv.addFormat("phone", /^[+][0-9]{12}$/)
+ajv.addFormat("phone", /^(\+\d{1,3})\d{10}$/)
 
 const AddressSchema = {
   type: "object",

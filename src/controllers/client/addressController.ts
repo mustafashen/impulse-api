@@ -12,9 +12,9 @@ const AddressController = {
         
         address.customer_id = body.id
         address.id = uuidv4()
-        
+        console.log(body)
         const valid = validateAddressCreateParams(address)
-        if (!valid) throw "4000"
+        if (!valid) throw "4022"
         
         const resData = await AddressModel.createAddress(address)
         if (resData?.Error) throw resData.Error
