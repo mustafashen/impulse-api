@@ -1,7 +1,6 @@
 import request from 'supertest';
 import {app} from '../../src/app';
 import { knex } from '../../src/db/knex';
-import { address_create } from '../factories/address-factory';
 import { cart_create, cart_line_create, cart_line_delete, cart_line_list, cart_line_update, cart_update } from '../factories/cart-factory';
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
