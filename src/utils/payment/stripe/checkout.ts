@@ -1,10 +1,7 @@
 import { StripeCheckoutLinesType } from "../../../types/StripeTypes";
-
-const stripeSecretKey = process.env.STRIPE_SK
-const stripe = require('stripe')(stripeSecretKey);
+import { stripe } from "./stripe";
 
 async function cartCheckout(line_items: StripeCheckoutLinesType) {
-    console.log('here',line_items)
     try {
         const session = await stripe.checkout.sessions.create({
             line_items,
