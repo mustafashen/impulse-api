@@ -18,15 +18,14 @@ const WishlistController = {
       const wishlistCustomerId = foundWishlist[0].customer_id
       if (!wishlistCustomerId || wishlistCustomerId !== body.id) throw "4001"
       
-      const wishlistLines = await WishlistModel.readWishlistLines(wishlist.id)
-      if (wishlistLines.Error) throw wishlistLines.Error
+      return foundWishlist
 
     } catch (error: any) {
       return {Error: error}
     }
   },
 
-  createWishlist: async (body: {wishlist: {}, id: string, token?: string}) => {
+  createWishlist: async (body: {id: string, token?: string}) => {
     try {
       const customerWishlist = await WishlistModel.findCustomerWishlist(body.id)
       if (customerWishlist.noWishlistFound) {
@@ -39,7 +38,7 @@ const WishlistController = {
 
         const resData = await WishlistModel.createWishlist(wishlistSchema)
         if (resData?.Error) throw resData.Error
-        return resData
+        return wishlistSchema
       } else {
         return customerWishlist
       } 
@@ -53,37 +52,39 @@ const WishlistController = {
       const {wishlist_line} = body
       console.log(body)
       if (!wishlist_line) throw "4000"
-      console.log('here')
-     const targetWishlist = await WishlistModel.findWishlist(wishlist_line.wishlist_id)
-     if (targetWishlist.Error) throw targetWishlist.Error
-     else if (body.id !== targetWishlist[0].customer_id)
-       throw "4003"
-       
 
-     wishlist_line.id = uuidv4()
-     const valid = validateWishlistLineCreateParams(wishlist_line)
-     if (!valid) throw "4022"
+      const targetWishlist = await WishlistModel.findWishlist(wishlist_line.wishlist_id)
+      if (targetWishlist.Error) throw targetWishlist.Error
+      else if (body.id !== targetWishlist[0].customer_id)
+        throw "4003"
+      
+
+      wishlist_line.id = uuidv4()
+      console.log('*************')
+      console.log(wishlist_line)
+      const valid = validateWishlistLineCreateParams(wishlist_line)
+      if (!valid) throw "4022"
  
 
-     const lineProduct = await WishlistModel.findWishlistProduct({
-       product_id: wishlist_line.product_id,
-       wishlist_id: wishlist_line.wishlist_id
-     })
-     if (lineProduct.Error) throw lineProduct.Error
+      const lineProduct = await WishlistModel.findWishlistProduct({
+        product_id: wishlist_line.product_id,
+        wishlist_id: wishlist_line.wishlist_id
+      })
+      if (lineProduct.Error) throw lineProduct.Error
 
-     if (lineProduct.length > 0) {
+      if (lineProduct.length > 0) {
       const resData = await WishlistModel.deleteWishlistLine(lineProduct[0].id)
       if (resData.Error) throw resData.Error
       return resData
-     } else {
+      } else {
       const resData = await WishlistModel.createWishlistLine(wishlist_line)
       if (resData.Error) throw resData.Error
       return resData
-     }
-     } catch (error) {
-       console.log(error)
-       return {Error: error}
-     }
+      }
+    } catch (error) {
+      console.log(error)
+      return {Error: error}
+    }
   },
 }
 

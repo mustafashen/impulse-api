@@ -5,7 +5,7 @@ import { authenticateCustomer } from "../../middlewares/client/customerAuth"
 
 const wishlistRoute = express.Router()
 
-wishlistRoute.get('/list', authenticateCustomer, async (req: Request, res: Response) => {
+wishlistRoute.post('/list', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await WishlistController.readWishlistLines(req.body)
     if (resData?.Error) throw resData.Error

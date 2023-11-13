@@ -68,8 +68,7 @@ const CheckoutController = {
 				checkout_id: session.id,
 				shipment_id: newShipment.id
 			}
-			
-			console.log(newCheckout)
+
 			const checkoutValid = validateCreateCheckoutParams(newCheckout)
 			if (!checkoutValid) throw "4022"
 

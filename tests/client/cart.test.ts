@@ -2,7 +2,6 @@ import request from 'supertest';
 import {app} from '../../src/app';
 import { knex } from '../../src/db/knex';
 import { cart_create, cart_line_create, cart_line_delete, cart_line_list, cart_line_update, cart_update } from '../factories/cart-factory';
-const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 jest.mock('uuid', () => ({ v4: () => '6de31bc8-9a89-4c82-b58b-0a6e4e9111cc' }))
