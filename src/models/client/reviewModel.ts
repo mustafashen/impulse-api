@@ -58,7 +58,7 @@ const ReviewModel = {
 
 	updateReview: async (review: ReviewUpdateType) => {
 		try {
-			const res = await knex('review').where({id: review.id}).update(review.updates)
+			const res = await knex('review').update(review.updates).where({id: review.id})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
 		} catch (error: any) {
@@ -71,7 +71,7 @@ const ReviewModel = {
 
 	deleteReview: async (review_id: string) => {
 		try {
-			const res = await knex('review').where({id: review_id}).delete()
+			const res = await knex('review').delete().where({id: review_id})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
 		} catch (error: any) {

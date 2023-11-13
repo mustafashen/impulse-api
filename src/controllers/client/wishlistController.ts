@@ -60,8 +60,6 @@ const WishlistController = {
       
 
       wishlist_line.id = uuidv4()
-      console.log('*************')
-      console.log(wishlist_line)
       const valid = validateWishlistLineCreateParams(wishlist_line)
       if (!valid) throw "4022"
  

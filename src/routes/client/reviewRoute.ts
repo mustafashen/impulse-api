@@ -62,7 +62,7 @@ reviewRouter.delete('/delete', authenticateCustomer, async (req: Request, res: R
       const resData = await ReviewController.deleteReview(req.body)
       if (resData?.Error) throw resData.Error
       console.log(resData)
-      res.status(204).send(resData)
+      res.status(200).send(resData)
     } catch (error: any) {
       console.log('route',error)
       const {httpCode, message} = errorMessages(error)
