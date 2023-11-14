@@ -25,7 +25,7 @@ describe('POST /client/customer/signup', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -53,7 +53,7 @@ describe('POST /client/customer/login', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -81,7 +81,7 @@ describe('DELETE /client/customer/logout', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -113,7 +113,7 @@ describe('DELETE /client/customer/delete', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -145,7 +145,7 @@ describe('PUT /client/customer/update', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -171,6 +171,6 @@ describe('PUT /client/customer/activate', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

@@ -31,7 +31,7 @@ describe('POST /client/cart/list', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -59,7 +59,7 @@ describe('POST /client/cart/create', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -88,7 +88,7 @@ describe('PUT /client/cart/update', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -120,7 +120,7 @@ describe('POST /client/cart/line-create', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -152,7 +152,7 @@ describe('DELETE /client/cart/line-delete', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -184,7 +184,7 @@ describe('PUT /client/cart/line-update', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -211,6 +211,6 @@ describe('GET /client/cart/find-customer-cart', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

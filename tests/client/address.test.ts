@@ -30,6 +30,6 @@ describe('POST /client/address/create', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

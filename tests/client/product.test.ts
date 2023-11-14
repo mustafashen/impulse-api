@@ -18,7 +18,7 @@ describe('GET /client/product/all', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -37,7 +37,7 @@ describe('POST /client/product/category', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -56,6 +56,6 @@ describe('POST /client/product/id', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

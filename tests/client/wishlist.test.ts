@@ -34,7 +34,7 @@ describe('POST /client/wishlist/list', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -65,7 +65,7 @@ describe('POST /client/wishlist/create', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -100,6 +100,6 @@ describe('POST /client/wishlist/line-toggle', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

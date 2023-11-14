@@ -27,6 +27,7 @@ const StaffController = {
       if (resData?.Error) throw resData.Error 
       return resData
     } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   },
@@ -49,15 +50,17 @@ const StaffController = {
       // return the auth token
       const resData = await StaffModel.addNewAuthToken({staffId: foundUser.id, token: jwt, id: uuidv4()})
       if (resData.Error) throw resData.Error
-      else if (resData.Success) return {token: jwt}
+      else if (resData.Success) return {token: jwt.id}
       else throw "Unexpected error during login"
     } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   },
 
   deleteLogoutStaff: async (body: {token: string, id: string}) => {
     try {
+      console.log(body)
       const valid = validateStaffLogoutParams(body)
       if (!valid) throw "4022"
       const resData = await StaffModel.deleteAuthToken(body.id, body.token)
@@ -65,6 +68,7 @@ const StaffController = {
       
       return resData
     } catch (error) {
+      console.log(error)
       return {Error: error}
     }
   },
@@ -79,7 +83,7 @@ const StaffController = {
       
       // An admin can only delete a staff with no admin privileges
       // Only admin an admin can delete is itself
-      const foundStaff = await knex('staff').where({id: staff.id}).select('isAdmin', 'id')
+      const foundStaff = await knex('staff').select('isAdmin', 'id').where({id: staff.id})
       if (foundStaff.length === 0 || foundStaff === 0) throw "4002"
       if (foundStaff[0].isAdmin) {
         if (id !== foundStaff.id) throw "4003"
@@ -94,17 +98,17 @@ const StaffController = {
     }
   },
 
-  updateAccountStaff: async (body: StaffUpdateType) => {
+  updateAccountStaff: async (body: {staff: StaffUpdateType}) => {
     try {
-      if (!body.updates) throw "4000"
-      const {updates} = body
+      if (!body.staff) throw "4000"
+      const {updates} = body.staff
 
-      const valid = validateStaffUpdateParams(body)
+      const valid = validateStaffUpdateParams(body.staff)
       if (!valid) throw "4022"
 
       if (updates.password) updates.password = await bcrypt.hash(updates.password, 10)
 
-      const resData = await StaffModel.updateStaff(body)
+      const resData = await StaffModel.updateStaff(body.staff)
       if (resData?.Error) throw resData.Error
       return resData
     } catch (error) {

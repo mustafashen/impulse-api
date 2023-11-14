@@ -27,7 +27,7 @@ describe('POST /client/review/customer-reviews', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -53,7 +53,7 @@ describe('POST /client/review/product-reviews', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -86,7 +86,7 @@ describe('POST /client/review/create', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -122,7 +122,7 @@ describe('POST /client/review/update', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -154,6 +154,6 @@ describe('POST /client/review/delete', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

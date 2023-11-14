@@ -45,7 +45,7 @@ staffRouter_cms.delete('/delete', authenticateAdmin, async (req: Request, res: R
   try {
     const resData = await StaffController.deleteAccountStaff(req.body)
     if (resData?.Error) throw resData.Error
-    res.status(201).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send({Error: message})
@@ -56,7 +56,7 @@ staffRouter_cms.put('/update', authenticateAdmin, async (req: Request, res: Resp
   try {
     const resData = await StaffController.updateAccountStaff(req.body)
     if (resData?.Error) throw resData.Error
-    res.status(201).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send({Error: message})

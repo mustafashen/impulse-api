@@ -57,6 +57,6 @@ describe('POST /client/checkout/cart', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

@@ -18,7 +18,7 @@ describe('GET /client/category/all', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })
 
@@ -37,6 +37,6 @@ describe('GET /client/category/parent', () => {
   })
 
   afterAll(() => {
-    jest.clearAllMocks()
+    jest.restoreAllMocks()
   })
 })

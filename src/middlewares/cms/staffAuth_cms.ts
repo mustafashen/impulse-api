@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt')
 async function authenticateStaff(req: Request, res: Response, next: NextFunction) {
   try {
 
-    const token = req.headers.authorization?.replace('Bearer', '')
+    const token = req.headers.authorization?.replace('Bearer ', '')
     if (!token) throw "4003"
 
     const decodedJWT = jwt.verify(token, process.env.JWT_SECRET)

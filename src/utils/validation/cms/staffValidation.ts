@@ -51,7 +51,6 @@ const StaffUpdateSchema = {
         email: {type: "string", format: "email"},
         password: {type: "string", format: "password"},
         name: {type: "string"},
-        tokens: {type: "array"},
         isAdmin: {type: "boolean"}
       }
     }
