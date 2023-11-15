@@ -6,7 +6,7 @@ interface CreateCategoryType {
 }
 
 interface UpdateCategoryType {
-  nameToUpdate: string,
+  id: string,
   updates: {
     name: string,
     parent_id: string

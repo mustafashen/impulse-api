@@ -20,7 +20,7 @@ categoryRouter_cms.delete('/delete', authenticateStaff, async (req: Request, res
   try {
     const resData = await CategoryController.deleteCategoryController(req.body)
     if (resData?.Error) throw resData.Error
-    res.status(201).send({Success: true})
+    res.status(200).send({Success: true})
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)
@@ -31,7 +31,7 @@ categoryRouter_cms.put('/update', authenticateStaff, async (req: Request, res: R
   try {
     const resData = await CategoryController.updateCategoryController(req.body)
     if (resData?.Error) throw resData.Error
-    res.status(201).send({Success: true})
+    res.status(200).send({Success: true})
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)

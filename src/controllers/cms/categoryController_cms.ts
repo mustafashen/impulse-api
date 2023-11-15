@@ -26,15 +26,15 @@ const CategoryController = {
     }
   },
 
-  deleteCategoryController: async (body: {category: {name: string}}) => {
+  deleteCategoryController: async (body: {category: {id: string}}) => {
     try {
       if (!body.category) throw "4000"
       const {category} = body
-      
+    
       const valid = validateCategoryDeleteParams(category)
       if (!valid) throw "4022"
 
-      const resData = await CategoryModel.deleteCategory(category.name)
+      const resData = await CategoryModel.deleteCategory(category.id)
       if (resData?.Error) throw resData.Error
       return resData
     } catch (error) {

@@ -15,9 +15,9 @@ const CategoryModel = {
     }
   },
 
-  deleteCategory: async (name: string) => {
+  deleteCategory: async (id: string) => {
     try {
-      const res = await knex('category').where({name}).delete()
+      const res = await knex('category').delete().where({id})
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
     } catch (error: any) {
@@ -29,8 +29,7 @@ const CategoryModel = {
 
   updateCategory: async (category: UpdateCategoryType) => {
     try {
-      const {name, parent_id} = category.updates
-      const res = await knex('category').where({name: category.nameToUpdate}).update({name, parent_id})
+      const res = await knex('category').update(category.updates).where({id: category.id})
       console.log(res)
       if (res.length === 0 || res === 0) throw "4004"
       return {Success: true}
