@@ -28,7 +28,7 @@ const OrderModel = {
 
 		updateStatusShipped: async (shipment_id: string) => {
 			try {
-				const res = await knex('order').where({shipment_id}).update({status: 'shipped'})
+				const res = await knex('order').update({status: 'shipped'}).where({shipment_id})
 				if (res.length === 0 || res === 0) throw "4004" 
 				return res  
 			} catch (error: any) {

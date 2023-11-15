@@ -19,7 +19,7 @@ const ShipmentController = {
       const orderStateRes = await OrderModel.updateStatusShipped(shipment.id)
       if (orderStateRes.Error) throw orderStateRes.Error
 
-      return resData
+      return {Success: true}
 
     } catch (error: any) {
       console.log(error)

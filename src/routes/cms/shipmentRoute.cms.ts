@@ -9,7 +9,7 @@ shipmentRouter_cms.put('/add', authenticateStaff, async (req: Request, res: Resp
   try {
     const resData = await ShipmentController.addShipment(req.body)
     if (resData?.Error) throw resData.Error
-    res.status(201).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send({Error: message})
