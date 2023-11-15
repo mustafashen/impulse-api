@@ -46,6 +46,7 @@ const ProductController_cms = {
 
   updateProductController: async (body: {product: ProductUpdateType}) => {
     try {
+      console.log(body)
       if (!body.product) throw "4000"
       const {product} = body
 

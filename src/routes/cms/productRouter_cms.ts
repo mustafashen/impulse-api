@@ -21,7 +21,7 @@ productRouter_cms.delete('/delete', authenticateStaff, async (req: Request, res:
   try {
     const resData = await ProductController_cms.deleteProductController(req.body)
     if (resData.Error) throw resData.Error
-    res.status(201).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)
@@ -32,7 +32,7 @@ productRouter_cms.put('/update', authenticateStaff, async (req: Request, res: Re
   try {
     const resData = await ProductController_cms.updateProductController(req.body)
     if (resData.Error) throw resData.Error
-    res.status(201).send(resData)
+    res.status(200).send(resData)
   } catch (error: any) {
     const {httpCode, message} = errorMessages(error)
     res.status(httpCode).send(message)
