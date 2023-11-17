@@ -81,16 +81,4 @@ customerRouter.get("/activate", async (req: Request, res: Response) =>{
   }
 })
 
-customerRouter.get("/", authenticateCustomer, async (req: Request, res: Response) => {
-  try {
-    // Query customer info; main info, cart, wishlist, orders etc.
-    res.send({OK: 'Authorized'})
-    
-  } catch (error: any) {
-    const {httpCode, message} = errorMessages(error)
-    console.log(httpCode, message)
-    res.status(httpCode).send({Error: message})
-  }
-})
- 
 export {customerRouter}
