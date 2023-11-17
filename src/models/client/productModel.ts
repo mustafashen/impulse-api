@@ -28,9 +28,13 @@ const ProductModel = {
       return {Error: error}
     }
   },
-  findProductByCategory: async (category_id: string) => {
+  findProductByCategory: async (category: {category_id: string, orderBy: string, order: 'asc' | 'desc'}) => {
     try {
-      const res = await knex('product').where({category_id})
+      const {category_id, orderBy, order} = category
+      const res = await knex('product').orderBy(
+        orderBy ? orderBy : 'id',
+        order ? order : 'asc'
+      ).where({category_id})
       console.log(res)
       if (res.length === 0 || res === 0) throw "4004"
       return res

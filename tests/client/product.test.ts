@@ -26,7 +26,8 @@ describe('POST /client/product/category', () => {
   it ('should return 200', async () => {
 
     knex.mockReturnValue({
-      where: jest.fn().mockReturnValue([{product_id: 'mockProductId', product_name: 'mockProductName'}])
+      where: jest.fn().mockReturnValue([{product_id: 'mockProductId', product_name: 'mockProductName'}]),
+      orderBy: jest.fn().mockReturnThis()
     })
     
     const response = await request(app)
@@ -45,7 +46,7 @@ describe('POST /client/product/id', () => {
   it ('should return 200', async () => {
 
     knex.mockReturnValue({
-      where: jest.fn().mockReturnValue([{product_id: 'mockProductId', product_name: 'mockProductName'}])
+      where: jest.fn().mockReturnValue([{product_id: 'mockProductId', product_name: 'mockProductName'}]),
     })
     
     const response = await request(app)

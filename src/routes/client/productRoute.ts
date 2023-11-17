@@ -32,7 +32,7 @@ productRouter.post('/category', async (req: Request, res: Response) => {
 
 productRouter.post('/id', async (req: Request, res: Response) => {
   try {
-    const resData = await ProductController.getProductsByCategory(req.body)
+    const resData = await ProductController.getProductsById(req.body)
     if (resData?.Error) throw resData.Error
     console.log(resData)
     res.status(200).send(resData)

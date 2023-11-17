@@ -10,10 +10,10 @@ const ProductController = {
       return {Error: error}
     }
   },
-  getProductsByCategory: async (body: {category: {category_id: string}}) => {
+  getProductsByCategory: async (body: {category: {category_id: string, orderBy: string, order: 'asc' | 'desc'}}) => {
     try {
       const {category} = body
-      const resData = await ProductModel.findProductByCategory(category.category_id)
+      const resData = await ProductModel.findProductByCategory(category)
       if (resData?.Error) throw resData.Error
       return resData
     } catch (error) {
