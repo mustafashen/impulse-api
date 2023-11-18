@@ -1,7 +1,7 @@
 
 # Impulse API
 
-A e-commerce API for basic e-commerce needs.
+An e-commerce API for basic commerce needs.
 
 
 ## Run Locally
