@@ -114,6 +114,47 @@ const CustomerController = {
     }
   },
 
+  getCustomerName: async (body: {customer: {id: string}}) => {
+    try {
+      if (!body.customer) throw "4000"
+
+      const resData = await CustomerModel.findCustomer(body.customer)
+      if (resData?.Error) throw resData.Error
+      return {
+        customer: {
+          name: resData[0].name
+      }}
+      
+    } catch (error: any) {
+      console.log('updateCustomerController', error)
+      return {Error: error}
+    }
+  },
+
+  getCustomerInfo: async (body: {id: string}) => {
+    try {
+      if (!body.id) throw "4000"
+
+      const resData = await CustomerModel.findCustomer({id: body.id})
+      if (resData?.Error) throw resData.Error
+      return {
+        customer: {
+          id: resData[0].id,
+          name: resData[0].name,
+          last_name: resData[0].last_name,
+          email: resData[0].email,
+          phone: resData[0].phone,
+          birth_date: resData[0].birth_date,
+          gender: resData[0].gender,
+          is_active: resData[0].is_active,
+      }}
+      
+    } catch (error: any) {
+      console.log(error)
+      return {Error: error}
+    }
+  },
+
   activateCustomer: async (token: string) => {
     try {
       if (!token) throw "4000"

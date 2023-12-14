@@ -12,7 +12,10 @@ const ProductController = {
   },
   getProductsByCategory: async (body: {category: {category_id: string, orderBy: string, order: 'asc' | 'desc'}}) => {
     try {
+      console.log(body)
       const {category} = body
+      if (!category) throw "4000"
+      
       const resData = await ProductModel.findProductByCategory(category)
       if (resData?.Error) throw resData.Error
       return resData
@@ -23,6 +26,8 @@ const ProductController = {
   getProductsById: async (body: {category: {id: string}}) => {
     try {
       const {category} = body
+      if (!category) throw "4000"
+      
       const resData = await ProductModel.findProductById(category.id)
       if (resData?.Error) throw resData.Error
       return resData

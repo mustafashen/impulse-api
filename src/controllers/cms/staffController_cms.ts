@@ -50,7 +50,7 @@ const StaffController = {
       // return the auth token
       const resData = await StaffModel.addNewAuthToken({staffId: foundUser.id, token: jwt, id: uuidv4()})
       if (resData.Error) throw resData.Error
-      else if (resData.Success) return {token: jwt.id}
+      else if (resData.Success) return {token: jwt}
       else throw "Unexpected error during login"
     } catch (error) {
       console.log(error)

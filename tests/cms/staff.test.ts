@@ -49,7 +49,7 @@ describe('POST /cms/staff/login', () => {
       })
 
     const jwtSpy = jest.spyOn(jwt, 'sign')
-    jwtSpy.mockReturnValue({id: 'mockAccessToken'})
+    jwtSpy.mockReturnValue('mockAccessToken')
 
     const bcryptSpy = jest.spyOn(bcrypt, 'compare')
     bcryptSpy.mockResolvedValue(true)

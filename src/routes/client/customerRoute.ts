@@ -68,6 +68,30 @@ customerRouter.put("/update", authenticateCustomer, async (req: Request, res: Re
   }
 })
 
+customerRouter.post("/name", async (req: Request, res: Response) => {
+  try {
+    const resData = await CustomerController.getCustomerName(req.body)
+    if (resData?.Error) throw resData.Error
+    res.send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    console.log(httpCode, message)
+    res.status(httpCode).send({Error: message})
+  }
+})
+
+customerRouter.post("/info", authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await CustomerController.getCustomerInfo(req.body)
+    if (resData?.Error) throw resData.Error
+    res.send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    console.log(httpCode, message)
+    res.status(httpCode).send({Error: message})
+  }
+})
+
 customerRouter.get("/activate", async (req: Request, res: Response) =>{
   try {
     //@ts-ignore

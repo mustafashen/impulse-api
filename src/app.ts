@@ -47,7 +47,7 @@ app.use(fileUpload({
     fileSize: 1024 * 1024
   }
 }))
-app.use(limiter)
+// app.use(limiter)
 
 app.use('/client/customer', customerRouter) 
 app.use('/client/category', categoryRouter)
