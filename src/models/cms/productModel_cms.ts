@@ -14,7 +14,7 @@ const ProductModel_cms = {
           features: product.features,
           category_id: product.category_id
         })
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('createProductModel', error)
@@ -38,7 +38,7 @@ const ProductModel_cms = {
           category_id: updates?.category_id
         })
         .where({id: product.id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('createProductModel', error)
@@ -52,7 +52,7 @@ const ProductModel_cms = {
       const res = await knex('product')
         .delete()
         .where({id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('createProductModel', error)

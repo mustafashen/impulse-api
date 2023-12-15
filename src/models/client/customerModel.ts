@@ -6,7 +6,7 @@ const CustomerModel = {
   createCustomer: async (customer: CustomerType) => {
     try {
       const res = await knex('customer').insert(customer)
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
       
     } catch (error: any) {
@@ -21,11 +21,9 @@ const CustomerModel = {
     try {
       if (email) {
         const res = await knex('customer').where({email: email})
-        if (res.length === 0 || res === 0) throw "4004" 
         return res
       } else if (id) {
         const res = await knex('customer').where({id: id})
-        if (res.length === 0 || res === 0) throw "4004" 
         return res
       }
 
@@ -42,7 +40,7 @@ const CustomerModel = {
       const {id, customerId, token} = newToken
       const res = await knex('customer_token').insert({id, token, customer_id: customerId})
 
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
 
     } catch (error: any) {
@@ -57,7 +55,7 @@ const CustomerModel = {
   deleteAuthToken: async (customerId: string, token: string) => {
     try {
       const res = await knex('customer_token').delete().where({customer_id: customerId, token})
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
       
     } catch (error: any) {
@@ -71,7 +69,7 @@ const CustomerModel = {
   deleteCustomer: async (customerId: string) => {
     try {
       const res = await knex('customer').delete().where({id: customerId})
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
 
     } catch (error: any) {
@@ -86,7 +84,7 @@ const CustomerModel = {
     const {customer} = body
     try {
       const res = await knex('customer').update({...customer.updates}).where({id: body.id})
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
 
     } catch (error: any) {
@@ -100,7 +98,7 @@ const CustomerModel = {
   activateCustomer: async (id: string) => {
     try {
       const res = await knex('customer').update({is_active: true}).where({id})
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
 
     } catch (error: any) {

@@ -5,7 +5,6 @@ const CartModel = {
   findCart: async (cart_id: string) => {
     try {
       const res = await knex('cart').where({id: cart_id})
-      if (res.length === 0 || res === 0) throw "4004" 
       return res
     } catch (error: any) {
       if(error.code) {
@@ -18,7 +17,6 @@ const CartModel = {
   findCustomerCart: async (customer_id: string) => {
     try {
       const res = await knex('cart').where({customer_id})
-      if (res.length === 0 || res === 0) return {noCartFound: true}
       return res
     } catch (error: any) {
       if(error.code) {
@@ -31,7 +29,6 @@ const CartModel = {
   findAllCartLines: async (cart_id: string) => {
     try {
       const res = await knex('cart_line').where({cart_id})
-      if (res.length === 0 || res === 0) throw "4004" 
       return res
     } catch (error: any) {
       if(error.code) {
@@ -44,7 +41,7 @@ const CartModel = {
   createCart: async (cart: CartType) => {
     try {
       const res = await knex('cart').insert(cart)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -58,7 +55,7 @@ const CartModel = {
   updateCart: async (cart: CartUpdateType) => {
     try {
       const res = await knex('cart').update(cart.updates).where({id: cart.id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -71,7 +68,7 @@ const CartModel = {
   createCartLine: async (cart_line: CartLineType) => {
     try {
       const res = await knex('cart_line').insert(cart_line)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -84,7 +81,7 @@ const CartModel = {
   deleteCartLine: async (cart_line_id: string) => {
     try {
       const res = await knex('cart_line').delete().where({id: cart_line_id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -97,7 +94,7 @@ const CartModel = {
   updateCartLine: async (cart_line: {id: string, updates: {quantity: number}}) => {
       try {
         const res = await knex('cart_line').update(cart_line.updates).where({id: cart_line.id})
-        if (res.length === 0 || res === 0) throw "4004"
+        if (res.length === 0 || res === 0) return {Warning: "No changes made"}
         return {Success: true}
       } catch (error: any) {
         if(error.code) {

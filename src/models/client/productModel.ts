@@ -5,8 +5,6 @@ const ProductModel = {
   findAllProducts: async () => {
     try {
       const res = await knex('product').select('*')
-      console.log(res)
-      if (res.length === 0 || res === 0) throw "4004"
       return res
     } catch (error: any) {
       if (error.code) {
@@ -18,8 +16,6 @@ const ProductModel = {
   findProductById: async (id: string) => {
     try {
       const res = await knex('product').where({id})
-      console.log(res)
-      if (res.length === 0 || res === 0) throw "4004"
       return res
     } catch (error: any) {
       if (error.code) {
@@ -35,8 +31,6 @@ const ProductModel = {
         orderBy ? orderBy : 'id',
         order ? order : 'asc'
       ).where({category_id})
-      console.log(res)
-      if (res.length === 0 || res === 0) throw "4004"
       return res
     } catch (error: any) {
       if (error.code) {

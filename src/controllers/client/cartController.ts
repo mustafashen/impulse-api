@@ -14,6 +14,7 @@ const CartController = {
 
       const foundCart = await CartModel.findCart(cart_id)
       if (foundCart.Error) throw foundCart.Error
+      else if (foundCart.length === 0) throw "4004"
 
       const cartCustomerId = foundCart[0].customer_id
       if (!cartCustomerId || cartCustomerId !== body.id) throw "4001"
@@ -32,7 +33,7 @@ const CartController = {
     try {
       
       const customerCart = await CartModel.findCustomerCart(body.id)
-      if (customerCart.noCartFound) {
+      if (customerCart.length === 0) {
         const cartSchema = {
           id: uuidv4(),
           customer_id: body.id,
@@ -43,6 +44,7 @@ const CartController = {
 
         const resData = await CartModel.createCart(cartSchema)
         if (resData.Error) throw resData.Error
+        else if (resData.Warning) return resData
         return {cart_id: cartSchema.id}
       
       } else {
@@ -63,8 +65,8 @@ const CartController = {
         if (!valid) throw "4022"
         
         const customerCart = await CartModel.findCustomerCart(body.id)
-        if (customerCart.noCartFound) throw "4004"
-        else if (customerCart[0].customer_id !== body.id) throw "4003"
+        if (customerCart.length === 0) throw "4004"
+        else if (customerCart[0].customer_id !== body.id) throw "4001"
 
         const resData = await CartModel.updateCart(body.cart)
         if (resData.Error) throw resData.Error
@@ -85,11 +87,10 @@ const CartController = {
     // If not found throw 4004
     const targetCart = await CartModel.findCart(cart_line.cart_id)
     if (targetCart.Error) throw targetCart.Error
-
+    else if (targetCart.length === 0) throw "4004"
     // We check if the action owner's id matches the customer id of the cart
-    if (targetCart.Error) throw targetCart.Error
     else if (body.id !== targetCart[0].customer_id)
-      throw "4003"
+      throw "4001"
       
     // If it is exist
     // create an id for cart
@@ -140,8 +141,9 @@ const CartController = {
 
       const foundCart = await CartModel.findCart(cart_line.cart_id)
       if (foundCart.Error) throw foundCart.Error
+      else if (foundCart.length === 0) throw "4004"
       else if (body.id !== foundCart[0].customer_id)
-        throw "4003"
+        throw "4001"
       
       const resData = await CartModel.deleteCartLine(cart_line.id)
       if (resData.Error) throw resData.Error
@@ -159,9 +161,10 @@ const CartController = {
 
       const valid = validateCartLineDeleteParams(cart_line)
       if (!valid) throw "4022"
-      console.log(body)
+
       const foundCart = await CartModel.findCart(cart_line.cart_id)
       if (foundCart.Error) throw foundCart.Error
+      else if (foundCart.length === 0) throw "4004"
       else if (body.id !== foundCart[0].customer_id)
         throw "4001"
      
@@ -184,7 +187,7 @@ const CartController = {
 
       const resData = await CartModel.findCustomerCart(id)
       if (resData.Error) throw resData.Error
-      else if (resData.noCartFound) throw "4004"
+      else if (resData.length === 0) throw "4004"
       return resData
     } catch (error: any) {
       console.log(error)

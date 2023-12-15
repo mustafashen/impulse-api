@@ -6,7 +6,6 @@ const ReviewModel = {
 	getReviewByCustomer: async (customer_id: string) => {
 		try {
 			const res = await knex('review').where({customer_id})
-			if (res.length === 0 || res === 0) throw "4004" 
       return res
 		} catch (error: any) {
       if(error.code) {
@@ -19,7 +18,6 @@ const ReviewModel = {
 	getReviewByProduct: async (product_id: string) => {
 		try {
 			const res = await knex('review').where({product_id})
-			if (res.length === 0 || res === 0) throw "4004" 
       return res
 		} catch (error: any) {
 				if(error.code) {
@@ -32,7 +30,6 @@ const ReviewModel = {
 	getReviewById: async (review_id: string) => {
 		try {
 			const res = await knex('review').where({id: review_id})
-			if (res.length === 0 || res === 0) throw "4004" 
       return res
 		} catch (error: any) {
 				if(error.code) {
@@ -46,7 +43,7 @@ const ReviewModel = {
 		try {
 			console.log(review)
 			const res = await knex('review').insert(review)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
 		} catch (error: any) {
 				if(error.code) {
@@ -59,7 +56,7 @@ const ReviewModel = {
 	updateReview: async (review: ReviewUpdateType) => {
 		try {
 			const res = await knex('review').update(review.updates).where({id: review.id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
 		} catch (error: any) {
 				if(error.code) {
@@ -72,7 +69,7 @@ const ReviewModel = {
 	deleteReview: async (review_id: string) => {
 		try {
 			const res = await knex('review').delete().where({id: review_id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
 		} catch (error: any) {
 				if(error.code) {

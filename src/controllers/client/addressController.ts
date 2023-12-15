@@ -12,7 +12,6 @@ const AddressController = {
         
         address.customer_id = body.id
         address.id = uuidv4()
-        console.log(body)
         const valid = validateAddressCreateParams(address)
         if (!valid) throw "4022"
         

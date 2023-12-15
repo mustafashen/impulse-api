@@ -42,13 +42,15 @@ const StaffController = {
       // find user
       const foundUser = await StaffModel.readStaff(staff)
       if (foundUser.Error) throw foundUser.Error
+      else if (foundUser.length === 0) throw "4004"
+
       // compare hashes
-      const doesMatch = await bcrypt.compare(staff.password, foundUser.password)
+      const doesMatch = await bcrypt.compare(staff.password, foundUser[0].password)
       if (!doesMatch) throw "4001"
       // generate authentication token and add to db
-      const jwt = await generateAuthToken(foundUser.id)
+      const jwt = await generateAuthToken(foundUser[0].id)
       // return the auth token
-      const resData = await StaffModel.addNewAuthToken({staffId: foundUser.id, token: jwt, id: uuidv4()})
+      const resData = await StaffModel.addNewAuthToken({staffId: foundUser[0].id, token: jwt, id: uuidv4()})
       if (resData.Error) throw resData.Error
       else if (resData.Success) return {token: jwt}
       else throw "Unexpected error during login"
@@ -84,7 +86,7 @@ const StaffController = {
       // An admin can only delete a staff with no admin privileges
       // Only admin an admin can delete is itself
       const foundStaff = await knex('staff').select('isAdmin', 'id').where({id: staff.id})
-      if (foundStaff.length === 0 || foundStaff === 0) throw "4002"
+      if (foundStaff.length === 0 || foundStaff === 0) throw "4003"
       if (foundStaff[0].isAdmin) {
         if (id !== foundStaff.id) throw "4003"
       }

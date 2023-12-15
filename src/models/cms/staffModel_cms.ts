@@ -6,7 +6,7 @@ const StaffModel = {
   createStaff: async (staff: StaffType) => {
     try {
       const res = await knex('staff').insert(staff)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if (error.code) {
@@ -19,8 +19,7 @@ const StaffModel = {
   readStaff: async (staff: StaffLoginType) => {
     try {
       const res = await knex('staff').select('id', 'email', 'password').where({email: staff.email})
-      if (res.length === 0 || res === 0) throw "4004"
-      return res[0]
+      return res
     } catch (error: any) {
       if (error.code) return {Error: error.code}
       return {Error: error}
@@ -30,7 +29,7 @@ const StaffModel = {
   updateStaff: async (body: StaffUpdateType) => {
     try {
       const res = await knex('staff').update(body.updates).where({id: body.id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if (error.code) return {Error: error.code}
@@ -42,7 +41,7 @@ const StaffModel = {
     try {
       const {id, staffId, token} = newToken
       const res = await knex('staff_token').insert({id, token, staff_id: staffId})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: "true"}
 
     } catch (error: any) {
@@ -56,7 +55,7 @@ const StaffModel = {
   deleteAccountStaff: async (staff: {id: string}) => {
     try {
       const res = await knex('staff').delete().where({id: staff.id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -69,7 +68,7 @@ const StaffModel = {
   deleteAuthToken: async (staffId: string, token: string) => {
     try {
       const res = await knex('staff_token').delete().where({staff_id: staffId, token})
-      if (res.length === 0 || res === 0) throw "4004" 
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
 
     } catch (error: any) {

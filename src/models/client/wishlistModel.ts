@@ -4,7 +4,6 @@ const WishlistModel = {
   findWishlist: async (wishlist_id: string) => {
     try {
       const res = await knex('wishlist').where({id: wishlist_id})
-      if (res.length === 0 || res === 0) throw "4004"
       return res
     } catch (error: any) {
       if(error.code) {
@@ -16,7 +15,6 @@ const WishlistModel = {
   readWishlistLines: async (wishlist_id: string) => {
     try {
       const res = await knex('wishlist_line').where({wishlist_id})
-      if (res.length === 0 || res === 0) throw "4004" 
       return res
     } catch (error: any) {
       if(error.code) {
@@ -29,7 +27,7 @@ const WishlistModel = {
   createWishlist: async (wishlist: WishlistType) => {
     try {
       const res = await knex('wishlist').insert(wishlist)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -42,7 +40,7 @@ const WishlistModel = {
   createWishlistLine: async (wishlist_line: WishlistLineType) => {
     try {
       const res = await knex('wishlist_line').insert(wishlist_line)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -55,7 +53,7 @@ const WishlistModel = {
   deleteWishlistLine: async (wishlist_line_id: string) => {
     try {
       const res = await knex('wishlist_line').where({id: wishlist_line_id}).delete()
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
       return {Success: true}
     } catch (error: any) {
       if(error.code) {
@@ -68,7 +66,6 @@ const WishlistModel = {
   findCustomerWishlist: async (wishlist_id: string) => {
     try {
       const res = await knex('wishlist').where({id: wishlist_id})
-      if (res.length === 0 || res === 0) return {noWishlistFound: true}
       return res
     } catch (error: any) {
       if(error.code) {

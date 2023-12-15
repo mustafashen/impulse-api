@@ -19,11 +19,13 @@ const CheckoutController = {
 
 			const cart_lines = await CartModel.findAllCartLines(cart.cart_id)
 			if (cart_lines.Error) throw cart_lines.Error
+			else if (cart_lines.length === 0) throw "4004"
 
 			const line_items = await Promise.all(
 				cart_lines.map(async (cart_line: CartLineType) => {
 					const product = await ProductModel.findProductById(cart_line.product_id)
 					if(product.Error) throw product.Error
+					else if (cart_lines.length === 0) throw "4004"
 					const {name, price, stock} = product[0]
 					if (stock < cart_line.quantity) throw "5000"
 					return {
@@ -45,6 +47,7 @@ const CheckoutController = {
 			
 			const foundCart = await CartModel.findCart(cart.cart_id)
 			if (foundCart.Error) throw foundCart.Error
+			else if (foundCart.length === 0) throw "4004"
 			const targetCart = foundCart[0]
 
 			// Create a shipment object
@@ -57,7 +60,8 @@ const CheckoutController = {
 			
 			const shipment = await ShipmentModel.createShipment(newShipment)
 			if (shipment.Error) throw shipment.Error
-			
+			else if (shipment.Warning) shipment.Warning
+
 			// Create an order object
 			const newCheckout: CreateOrderType = {
 				id: uuidv4(),
@@ -74,7 +78,8 @@ const CheckoutController = {
 
 			const order = await OrderModel.createOrder(newCheckout)
 			if (order.Error) throw order.Error
-			
+			else if (order.Warning) throw order.Warning
+
 			return {checkout_url: session.url}
 
     } catch (error: any) {

@@ -14,7 +14,8 @@ const ShipmentController = {
 
       const resData = await ShipmentModel.addShipment(shipment)
       if (resData.Error) throw resData.Error
-
+      else if (resData.Warning) throw resData.Warning
+      
       // After shipment info successfully added, we update the order status to 'shipped'
       const orderStateRes = await OrderModel.updateStatusShipped(shipment.id)
       if (orderStateRes.Error) throw orderStateRes.Error

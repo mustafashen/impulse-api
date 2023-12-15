@@ -6,7 +6,7 @@ const CategoryModel = {
   createCategory: async (category: CreateCategoryType) => {
     try {
       const res = await knex('category').insert(category)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('createCategoryModel', error)
@@ -18,7 +18,7 @@ const CategoryModel = {
   deleteCategory: async (id: string) => {
     try {
       const res = await knex('category').delete().where({id})
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('deleteCategoryModel', error)
@@ -31,7 +31,7 @@ const CategoryModel = {
     try {
       const res = await knex('category').update(category.updates).where({id: category.id})
       console.log(res)
-      if (res.length === 0 || res === 0) throw "4004"
+      if (res.length === 0 || res === 0) return {Warning: "No changes made"}
       return {Success: true}
     } catch (error: any) {
       console.log('deleteCategoryModel', error)

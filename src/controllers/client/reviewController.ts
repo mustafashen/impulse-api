@@ -72,7 +72,8 @@ const ReviewController = {
 			if (!valid) throw "4022"
 
 			const targetReview = await ReviewModel.getReviewById(review.id)
-			if (targetReview[0].customer_id !==  body.id) throw "4003"
+			if (targetReview.length === 0) throw "4004"
+			else if (targetReview[0].customer_id !==  body.id) throw "4003"
 
 			const resData = await ReviewModel.updateReview(review)
 			if (resData.Error) throw resData.Error
@@ -93,7 +94,8 @@ const ReviewController = {
 			if (!valid) throw "4022"
 
 			const targetReview = await ReviewModel.getReviewById(review.id)
-			if (targetReview[0].customer_id !==  body.id) throw "4003"
+			if (targetReview.length === 0) throw "4004"
+			else if (targetReview[0].customer_id !==  body.id) throw "4003"
 
 			const resData = await ReviewModel.deleteReview(review.id)
 			if (resData.Error) throw resData.Error

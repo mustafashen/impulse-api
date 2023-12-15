@@ -5,7 +5,7 @@ const ShipmentModel = {
 		createShipment: async (shipment: CreateShipmentType) => {
 			try {
 				const res = await knex('shipment').insert({...shipment})
-				if (res.length === 0 || res === 0) throw "4004" 
+				if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
 				return res  
 			} catch (error: any) {
 					console.log(error)
@@ -17,7 +17,7 @@ const ShipmentModel = {
     addShipment: async (shipment: UpdateShipmentType) => {
 			try {
 				const res = await knex('shipment').update(shipment.updates).where({id: shipment.id})
-				if (res.length === 0 || res === 0) throw "4004" 
+				if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
 				return res  
 			} catch (error: any) {
 					console.log(error)

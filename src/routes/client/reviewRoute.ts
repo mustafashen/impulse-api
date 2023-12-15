@@ -7,6 +7,7 @@ const reviewRouter = express.Router()
 
 reviewRouter.post('/customer-reviews', async (req: Request, res: Response) => {
     try {
+      console.log('req',req.body)
       const resData = await ReviewController.getReviewByCustomer(req.body)
       if (resData?.Error) throw resData.Error
       console.log(resData)

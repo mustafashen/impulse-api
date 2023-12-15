@@ -46,6 +46,7 @@ const CustomerController = {
 
       const searchResult = await CustomerModel.findCustomer({email: customer.email})
       if (searchResult?.Error) throw searchResult.error
+      else if (searchResult.length === 0) throw "4004"
 
       const isMatch = await bcrypt.compare(customer.password, searchResult[0].password)
       if (!isMatch) throw "4001"
@@ -99,6 +100,7 @@ const CustomerController = {
 
       const searchResult = await CustomerModel.findCustomer({id: body.id})
       if (searchResult?.Error) throw searchResult.Error
+      else if (searchResult.length === 0) throw "4004"
 
       const isMatch = await bcrypt.compare(customer.password, searchResult[0].password)
       if (!isMatch) throw "4001"
@@ -120,6 +122,7 @@ const CustomerController = {
 
       const resData = await CustomerModel.findCustomer(body.customer)
       if (resData?.Error) throw resData.Error
+      else if (resData.length === 0) throw "4004"
       return {
         customer: {
           name: resData[0].name
@@ -137,6 +140,7 @@ const CustomerController = {
 
       const resData = await CustomerModel.findCustomer({id: body.id})
       if (resData?.Error) throw resData.Error
+      else if (resData.length === 0) throw "4004"
       return {
         customer: {
           id: resData[0].id,

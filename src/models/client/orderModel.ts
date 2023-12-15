@@ -4,7 +4,7 @@ const OrderModel = {
     createOrder: async (order: CreateOrderType) => {
 			try {
 				const res = await knex('order').insert({...order})
-				if (res.length === 0 || res === 0) throw "4004" 
+				if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
 				return res  
 			} catch (error: any) {
 				console.log(error)
@@ -16,7 +16,7 @@ const OrderModel = {
 		updateStatusPaid: async (checkout_id: string) => {
 			try {
 				const res = await knex('order').where({checkout_id}).update({status: 'paid'})
-				if (res.length === 0 || res === 0) throw "4004" 
+				if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
 				return res  
 			} catch (error: any) {
 					if(error.code) {
@@ -29,7 +29,7 @@ const OrderModel = {
 		updateStatusShipped: async (shipment_id: string) => {
 			try {
 				const res = await knex('order').update({status: 'shipped'}).where({shipment_id})
-				if (res.length === 0 || res === 0) throw "4004" 
+				if (res.length === 0 || res === 0) return {Warning: "No changes made"} 
 				return res  
 			} catch (error: any) {
 					if(error.code) {

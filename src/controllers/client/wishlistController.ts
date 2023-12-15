@@ -14,6 +14,7 @@ const WishlistController = {
 
       const foundWishlist = await WishlistModel.readWishlistLines(wishlist.id)
       if (foundWishlist?.Error) throw foundWishlist.Error
+      else if (foundWishlist.length === 0) throw "4004"
 
       const wishlistCustomerId = foundWishlist[0].customer_id
       if (!wishlistCustomerId || wishlistCustomerId !== body.id) throw "4001"
@@ -28,7 +29,7 @@ const WishlistController = {
   createWishlist: async (body: {id: string, token?: string}) => {
     try {
       const customerWishlist = await WishlistModel.findCustomerWishlist(body.id)
-      if (customerWishlist.noWishlistFound) {
+      if (customerWishlist.length === 0) {
         const wishlistSchema = {
           id: uuidv4(),
           customer_id: body.id,
@@ -38,6 +39,7 @@ const WishlistController = {
 
         const resData = await WishlistModel.createWishlist(wishlistSchema)
         if (resData?.Error) throw resData.Error
+        else if (resData.Warning) return resData
         return wishlistSchema
       } else {
         return customerWishlist
@@ -55,6 +57,7 @@ const WishlistController = {
 
       const targetWishlist = await WishlistModel.findWishlist(wishlist_line.wishlist_id)
       if (targetWishlist.Error) throw targetWishlist.Error
+      else if (targetWishlist.length === 0) throw "4004"
       else if (body.id !== targetWishlist[0].customer_id)
         throw "4003"
       
