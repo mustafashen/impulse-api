@@ -47,11 +47,12 @@ const ReviewController = {
 			if (!review) throw "4000"
 
 			review.id = uuidv4()
+			review.customer_id = body.id
 
 			const valid = validateReviewCreateParams(review)
 			if (!valid) throw "4022"
 
-			if (review.customer_id !==  body.id) throw "4003"
+			if (review.customer_id !==  body.id) throw "4001"
 
 			const resData = await ReviewModel.createReview(review)
 			if (resData.Error) throw resData.Error
