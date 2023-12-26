@@ -92,6 +92,7 @@ const CustomerController = {
 
   updateCustomer: async (body: {id: string, customer: CustomerUpdateType}) => {
     try {
+      console.log(body)
       if (!body.customer) throw "4000"
       const {customer} = body
 

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 async function authenticateCustomer(req: Request, res: Response, next: NextFunction) {
   try {
-
+    console.log(req.headers.authorization, req.body)
     const token = req.headers.authorization?.replace('Bearer ', '')
     // If there is no auth token respond unauthorized
     if (!token) throw "4003"

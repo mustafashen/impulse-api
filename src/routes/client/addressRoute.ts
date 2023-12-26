@@ -17,6 +17,42 @@ addressRouter.post('/create', authenticateCustomer, async (req: Request, res: Re
   }  
 })
 
+addressRouter.post('/list', authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await AddressController.listAddress(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(201).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }  
+})
+
+addressRouter.delete('/delete', authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await AddressController.deleteAddress(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(201).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }  
+})
+
+addressRouter.delete('/update', authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await AddressController.updateAddress(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(201).send(resData)
+  } catch (error: any) {
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }  
+})
+
 export {
   addressRouter
 }

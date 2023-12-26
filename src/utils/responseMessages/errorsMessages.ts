@@ -27,7 +27,7 @@ const errorMessages = (code: string) => {
     case "4001":
       return { httpCode: 401, message: {Server: "Authentication error"} }
     case "4003":
-      return { httpCode: 403, message: {Server: "Not authorized"} }
+      return { httpCode: 403, message: {Server: "Forbidden"} }
     case "4004":
       return { httpCode: 404, message: {Server: "Resource not found"} }
     case "4022":
