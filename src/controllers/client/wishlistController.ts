@@ -12,14 +12,37 @@ const WishlistController = {
       const valid = validateWishlistReadLineSParams(wishlist)
       if (!valid) throw "4022"
 
-      const foundWishlist = await WishlistModel.readWishlistLines(wishlist.id)
-      if (foundWishlist?.Error) throw foundWishlist.Error
+      const foundWishlist = await WishlistModel.findWishlist(wishlist.id)
+      if (foundWishlist.Error) throw foundWishlist.Error
       else if (foundWishlist.length === 0) throw "4004"
 
       const wishlistCustomerId = foundWishlist[0].customer_id
       if (!wishlistCustomerId || wishlistCustomerId !== body.id) throw "4001"
+
       
-      return foundWishlist
+      const wishlist_lines = await WishlistModel.readWishlistLines(wishlist.id)
+      if (wishlist_lines?.Error) throw wishlist_lines.Error
+      else if (wishlist_lines.length === 0) return wishlist_lines
+
+      return wishlist_lines
+
+    } catch (error: any) {
+      return {Error: error}
+    }
+  },
+
+  readWishlistLine: async (body: {wishlist_line: {id: string}, id: string}) => {
+    try {
+      const {wishlist_line} = body
+      if (!wishlist_line) throw "4000"
+
+      const valid = validateWishlistReadLineSParams(wishlist_line)
+      if (!valid) throw "4022"
+      
+      const res = await WishlistModel.readWishlistLine(wishlist_line.id)
+      if (res?.Error) throw res.Error
+
+      return res
 
     } catch (error: any) {
       return {Error: error}
@@ -40,9 +63,9 @@ const WishlistController = {
         const resData = await WishlistModel.createWishlist(wishlistSchema)
         if (resData?.Error) throw resData.Error
         else if (resData.Warning) return resData
-        return wishlistSchema
+        return {wishlist_id: wishlistSchema.id}
       } else {
-        return customerWishlist
+        return {wishlist_id: customerWishlist[0].id}
       } 
     } catch (error: any) {
       return {Error: error}
@@ -52,7 +75,6 @@ const WishlistController = {
   toggleWishlistLine: async (body: {id: string, wishlist_line: WishlistLineType}) => {
     try {
       const {wishlist_line} = body
-      console.log(body)
       if (!wishlist_line) throw "4000"
 
       const targetWishlist = await WishlistModel.findWishlist(wishlist_line.wishlist_id)

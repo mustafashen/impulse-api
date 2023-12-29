@@ -24,6 +24,18 @@ const WishlistModel = {
     }
   },
 
+  readWishlistLine: async (id: string) => {
+    try {
+      const res = await knex('wishlist_line').where({id})
+      return res
+    } catch (error: any) {
+      if(error.code) {
+        return {Error: error.code}
+      }
+      return {Error: error}
+    }
+  },
+
   createWishlist: async (wishlist: WishlistType) => {
     try {
       const res = await knex('wishlist').insert(wishlist)

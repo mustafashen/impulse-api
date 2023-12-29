@@ -1,5 +1,5 @@
 import { CartModel } from "../../models/client/cartModel"
-import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLinesReadParams, validateCartUpdateParams, validateCustomerCartFindParams } from "../../utils/validation/client/cartValidation"
+import { validateCartCreateParams, validateCartLineCreateParams, validateCartLineDeleteParams, validateCartLineReadParams, validateCartLinesReadParams, validateCartUpdateParams, validateCustomerCartFindParams } from "../../utils/validation/client/cartValidation"
 const { v4: uuidv4 } = require('uuid')
 
 
@@ -31,16 +31,16 @@ const CartController = {
 
   createCart: async (body: {cart: {location?: string}, id: string, token?: string}) => {
     try {
-      
       const customerCart = await CartModel.findCustomerCart(body.id)
       if (customerCart.length === 0) {
-        const cartSchema = {
+        const cartSchema: {id: string, customer_id: string, location?: string} = {
           id: uuidv4(),
           customer_id: body.id,
-          location: body.cart.location
         }
+        if (body.cart.location) cartSchema.location = body.cart.location
+        
         const valid = validateCartCreateParams(cartSchema)
-        if (!valid) throw "4000"
+        if (!valid) throw "4022"
 
         const resData = await CartModel.createCart(cartSchema)
         if (resData.Error) throw resData.Error
@@ -48,7 +48,7 @@ const CartController = {
         return {cart_id: cartSchema.id}
       
       } else {
-        return customerCart
+        return {cart_id: customerCart[0].id}
       }
 
     } catch (error: any) {
@@ -167,10 +167,16 @@ const CartController = {
       else if (foundCart.length === 0) throw "4004"
       else if (body.id !== foundCart[0].customer_id)
         throw "4001"
-     
-      const resData = await CartModel.updateCartLine(cart_line)
-      if (resData.Error) throw resData.Error
-      return resData
+      
+      if (cart_line.updates.quantity === 0) {
+        const resData = await CartModel.deleteCartLine(cart_line.id)
+        if (resData.Error) throw resData.Error
+        return resData
+      } else {
+        const resData = await CartModel.updateCartLine(cart_line)
+        if (resData.Error) throw resData.Error
+        return resData
+      }
     } catch (error: any) {
       console.log(error)
       return {Error: error}
@@ -189,6 +195,24 @@ const CartController = {
       if (resData.Error) throw resData.Error
       else if (resData.length === 0) throw "4004"
       return resData
+    } catch (error: any) {
+      console.log(error)
+      return {Error: error}
+    }
+  },
+
+  readCartLine: async (body: {id: string, cart_line: {id: string}}) => {
+    try {
+      const {cart_line} = body
+      if (!cart_line) throw "4000"
+      
+      const valid = validateCartLineReadParams(body.cart_line)
+      if (!valid) throw "4000"
+      
+      const cartLine = await CartModel.findCartLine(cart_line.id)
+      if (cartLine.Error) throw cartLine.Error
+      
+      return cartLine
     } catch (error: any) {
       console.log(error)
       return {Error: error}

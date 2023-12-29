@@ -18,6 +18,19 @@ cartRouter.post('/list', authenticateCustomer, async (req: Request, res: Respons
   }
 })
 
+cartRouter.post('/line', authenticateCustomer, async (req: Request, res: Response) => {
+  try {
+    const resData = await CartController.readCartLine(req.body)
+    if (resData?.Error) throw resData.Error
+    console.log(resData)
+    res.status(200).send(resData)
+  } catch (error: any) {
+    console.log('route',error)
+    const {httpCode, message} = errorMessages(error)
+    res.status(httpCode).send(message)
+  }
+})
+
 cartRouter.post('/create', authenticateCustomer, async (req: Request, res: Response) => {
   try {
     const resData = await CartController.createCart(req.body)

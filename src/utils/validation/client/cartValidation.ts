@@ -40,6 +40,14 @@ const CartLinesReadSchema = {
   required: ['cart_id']
 }
 
+const CartLineReadSchema = {
+  type: "object",
+  properties: {
+    id: {type: "string", format: "uuid"},
+  },
+  required: ['id']
+}
+
 const CartLineCreateSchema = {
   type: "object",
   properties: {
@@ -75,6 +83,8 @@ const CartLineUpdateSchema = {
   required: ['id']
 }
 
+
+
 const validateCartLinesReadParams = ajv.compile(CartLinesReadSchema)
 const validateCartCreateParams = ajv.compile(CartCreateSchema)
 const validateCartLineCreateParams = ajv.compile(CartLineCreateSchema)
@@ -82,7 +92,7 @@ const validateCartLineDeleteParams = ajv.compile(CartLineDeleteSchema)
 const validateCartLineUpdateParams = ajv.compile(CartLineUpdateSchema)
 const validateCustomerCartFindParams = ajv.compile(CustomerCartFindSchema)
 const validateCartUpdateParams = ajv.compile(CartUpdateSchema)
-
+const validateCartLineReadParams = ajv.compile(CartLineReadSchema)
 export {
   validateCartLinesReadParams,
   validateCartCreateParams,
@@ -90,5 +100,6 @@ export {
   validateCartLineDeleteParams,
   validateCartLineUpdateParams,
   validateCustomerCartFindParams,
-  validateCartUpdateParams
+  validateCartUpdateParams,
+  validateCartLineReadParams
 }
